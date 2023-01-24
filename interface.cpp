@@ -1,33 +1,22 @@
-#include "user.h"
-#include "dealer.h"
-#include "employee.h"
-#include "customer.h"
-#include <iostream>
-#include <Windows.h>
-
-using std::cout;
-using std::cin;
-using std::string;
-
-template <typename T>
-T input(const string& _s = "") {
-	T temp;
-	cout << _s;
-	cin >> temp;
-	return temp;
-}
+#include "utilities.h"
 
 int main() {
-	string welcome = "***************** WELCOME TO OUR STORE *****************";
+	const string welcome = "***************** WELCOME TO OUR STORE *****************";
 	cout << welcome << endl << endl;
-	char answer;
+
 	prompt:
 	cout << "Do you have an account? [y/n] ";
-	cin >> answer;
+	char answer = getch();
 	system("cls");
+
 	bool success;
 	User* user = NULL;
-	enum class userTypes { none = 0, dealer = 1, employee = 2, customer = 3 };
+	enum class userTypes {
+		none = 0,
+		dealer = 1,
+		employee = 2,
+		customer = 3
+	};
 	userTypes userType = userTypes::none;
 	switch (answer) {
 	case 'n':
@@ -42,7 +31,7 @@ int main() {
 			string lastname = input<string>("\tLastname: ");
 			string username = input<string>("\tUsername: ");
 			string email = input<string>("\tEmail: ");
-			string password = input<string>("\tPassword: ");
+			string password = getPassword("\tPassword: ");
 			Date birthday = input<Date>("\tBirthDay (yyyy-mm-dd): ");
 
 			if (userType == userTypes::dealer) {
@@ -75,7 +64,7 @@ int main() {
 		cout << "Login" << endl;
 		do {
 			string username = input<string>("\tUsername: ");
-			string password = input<string>("\tPassword: ");
+			string password = getPassword("\tPassword: ");
 			system("cls");
 
 			// Try login as a customer

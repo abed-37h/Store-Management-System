@@ -147,6 +147,7 @@
     <ClInclude Include="fileio.h" />
     <ClInclude Include="product.h" />
     <ClInclude Include="user.h" />
+    <ClInclude Include="utilities.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cart.cpp" />
