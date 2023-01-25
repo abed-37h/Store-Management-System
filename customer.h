@@ -25,8 +25,7 @@ public:
     void viewCart(void)const;
     bool purchase(void);
     bool operator==(const Customer&);
-    /*friend istream& operator>>(istream&, Customer&);
+    friend istream& operator>>(istream&, Customer&);
     friend ostream& operator<<(ostream&, const Customer&);
-    friend istringstream& operator>>(istringstream&, Customer&);*/
 };
 

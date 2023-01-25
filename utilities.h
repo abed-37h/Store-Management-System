@@ -16,6 +16,7 @@ T input(const string& = "");
 
 string getPassword(const string& = "");
 
+// Definitions
 template <typename T>
 T input(const string& _s) {
 	T temp;

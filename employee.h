@@ -19,8 +19,7 @@ public:
     const bool logout(void);
     const bool refill(Product, const unsigned int);
     bool operator==(const Employee&);
-    /*friend istream& operator>>(istream&, Employee&);
+    friend istream& operator>>(istream&, Employee&);
     friend ostream& operator<<(ostream&, const Employee&);
-    friend istringstream& operator>>(istringstream&, Employee&);*/
 };
 

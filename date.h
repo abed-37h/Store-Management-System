@@ -27,6 +27,9 @@ public:
     const int month(void)const;
     const int day(void)const;
     bool isLeapYear(void)const;
+    bool operator==(const Date&) const;
+    bool operator<(const Date&) const;
+    bool operator>(const Date&) const;
     friend istream& operator>>(istream&, Date&);
     friend ostream& operator<<(ostream&, const Date&);
     friend Date operator-(Date, Date);

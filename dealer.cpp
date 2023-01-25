@@ -20,7 +20,10 @@ Dealer::~Dealer() {
 }
 
 const bool Dealer::createAccount(void) {
-	if (userio::exist(this->username(), this->email(), filenames::dealers)) return false;
+	if (userio::exist<Customer>(this->username(), this->email(), filenames::customers)) return false;
+	if (userio::exist<Employee>(this->username(), this->email(), filenames::employees)) return false;
+	if (userio::exist<Dealer>(this->username(), this->email(), filenames::dealers)) return false;
+	insert(*this, filenames::customers);
 	insert(*this, filenames::dealers);
 	return true;
 }
@@ -33,13 +36,13 @@ const bool Dealer::modifyAccount(void) {
 }
 
 const bool Dealer::deleteAccount(void) {
-	if (!userio::exist(this->username(), this->email(), filenames::dealers)) return false;
+	if (!userio::exist<Dealer>(this->username(), this->email(), filenames::dealers)) return false;
 	delete1(*this, filenames::dealers);
 	return true;
 }
 
 const bool Dealer::login(void) {
-	if (userio::authenticate(this->username(), this->password(), filenames::dealers)) {
+	if (userio::authenticate<Dealer>(this->username(), this->password(), filenames::dealers)) {
 		*this = userio::select<Dealer>(this->username(), filenames::dealers);
 		return this->_loggedIn = true;
 	}

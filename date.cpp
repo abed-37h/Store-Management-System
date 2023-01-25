@@ -52,35 +52,47 @@ bool Date::isLeapYear(void)const {
     return (this->_year % 4 == 0 || this->_year % 400 == 0) ? true : false;
 }
 
-istream& operator>>(istream& in, Date& date) {
+bool Date::operator==(const Date& _date) const {
+    return (this->_year == _date._year && this->_month == _date._month && this->_day == _date._day);
+}
+
+bool Date::operator<(const Date& _date) const {
+    return (this->_year < _date._year || this->_month < _date._month || this->_day < _date._day);
+}
+
+bool Date::operator>(const Date& _date) const {
+    return (this->_year > _date._year || this->_month > _date._month || this->_day > _date._day);
+}
+
+istream& operator>>(istream& in, Date& _date) {
     char dash;
-    in >> date._year >> dash >> date._month >> dash >> date._day;
+    in >> _date._year >> dash >> _date._month >> dash >> _date._day;
     return in;
 }
 
-ostream& operator<<(ostream& out, const Date& date) {
-    out << date._year << '-' << date._month << '-' << date._day;
+ostream& operator<<(ostream& out, const Date& _date) {
+    out << _date._year << '-' << _date._month << '-' << _date._day;
     return out;
 }
 
-Date operator-(Date Date1, Date Date2) {
+Date operator-(Date _date1, Date _date2) {
     Date temp(-1, -1, -1);
-    if (Date1._year < Date2._year) return temp;
+    if (_date1._year < _date2._year) return temp;
     map<int, int> _months1;
-    if (Date1.isLeapYear()) _months1 = LEAPMONTHS;
+    if (_date1.isLeapYear()) _months1 = LEAPMONTHS;
     else _months1 = NONLEAPMONTHS;
     map<int, int> _months2;
-    if (Date2.isLeapYear()) _months2 = LEAPMONTHS;
+    if (_date2.isLeapYear()) _months2 = LEAPMONTHS;
     else _months2 = NONLEAPMONTHS;
-    if (Date1._day < Date2._day) {
-        Date1._day += _months1[Date1._month--];
+    if (_date1._day < _date2._day) {
+        _date1._day += _months1[_date1._month--];
     }
-    if (Date1._month < Date2._month) {
-        Date1._month += 12;
-        Date1._year--;
+    if (_date1._month < _date2._month) {
+        _date1._month += 12;
+        _date1._year--;
     }
-    temp._day = Date1._day - Date2._day;
-    temp._month = Date1._month - Date2._month;
-    temp._year = Date1._year - Date2._year;
+    temp._day = _date1._day - _date2._day;
+    temp._month = _date1._month - _date2._month;
+    temp._year = _date1._year - _date2._year;
     return temp;
 }

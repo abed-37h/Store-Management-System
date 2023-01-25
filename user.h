@@ -8,7 +8,6 @@
 using std::string;
 using std::istream;
 using std::ostream;
-using std::istringstream;
 using std::cout;
 using std::endl;
 
@@ -55,16 +54,15 @@ public:
 	const unsigned int age(void)const;
 	// 
 	//const unsigned int calculateAge(void)const;
-	virtual const bool createAccount(void);
-	virtual const bool modifyAccount(void);
-	virtual const bool deleteAccount(void);
-	virtual const bool login(void);
-	virtual const bool logout(void);
+	virtual const bool createAccount(void) = 0;
+	virtual const bool modifyAccount(void) = 0;
+	virtual const bool deleteAccount(void) = 0;
+	virtual const bool login(void) = 0;
+	virtual const bool logout(void) = 0;
 	void viewStocks(const string = "All")const;
 	// Operators
 	bool operator==(const User&);
 	friend istream& operator>>(istream&, User&);
 	friend ostream& operator<<(ostream&, const User&);
-	friend istringstream& operator>>(istringstream&, User&);
 };
 

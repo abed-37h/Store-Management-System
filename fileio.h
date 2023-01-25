@@ -17,15 +17,16 @@ using std::getline;
 using std::endl;
 
 namespace filenames {
-// directory
-const char usersdir[] = "users/";
-const char productsdir[] = "products/";
-// filenames
-const char users[] = "users.dat";
-const char customers[] = "customers.dat";
-const char employees[] = "employees.dat";
-const char dealers[] = "dealers.dat";
-const char products[] = "products.dat";
+	// directories
+	const char usersdir[] = "users/";
+	const char productsdir[] = "products/";
+	// filenames
+	const char users[] = "users.dat";
+	const char customers[] = "customers.dat";
+	const char employees[] = "employees.dat";
+	const char dealers[] = "dealers.dat";
+	const char products[] = "products.dat";
+	const char temp[] = "temp.dat";
 }
 
 // General
@@ -45,7 +46,9 @@ template <class T>
 void delete1(const T&, const char _filename[]);
 
 namespace userio {
+	template <class T>
 	bool exist(const string&, const string&, const char _filename[]);
+	template <class T>
 	bool authenticate(const string&, const string&, const char _filename[]);
 	template <class T = User>
 	T select(const string&, const char _filename[]);
@@ -113,7 +116,7 @@ void update(const T& _object, const char _filename[]) {
 		fin.close();
 		return;
 	}
-	nout.open("temp.dat", std::ios::binary | std::ios::app);
+	nout.open(filenames::temp, std::ios::binary | std::ios::app);
 	while (!fin.eof()) {
 		T _record;
 		fin >> _record;
@@ -123,7 +126,7 @@ void update(const T& _object, const char _filename[]) {
 	fin.close();
 	nout.close();
 	remove(_filename);
-	rename("temp.dat", _filename);
+	rename(filenames::temp, _filename);
 }
 
 template <class T>
@@ -135,7 +138,7 @@ void delete1(const T& _object, const char _filename[]) {
 		fin.close();
 		return;
 	}
-	nout.open("temp.dat", std::ios::binary | std::ios::app);
+	nout.open(filenames::temp, std::ios::binary | std::ios::app);
 	while (!fin.eof()) {
 		T _record;
 		fin >> _record;
@@ -144,12 +147,48 @@ void delete1(const T& _object, const char _filename[]) {
 	fin.close();
 	nout.close();
 	remove(_filename);
-	rename("temp.dat", _filename);
+	rename(filenames::temp, _filename);
 }
 
 // user
 template <class T>
+bool userio::exist(const string& _username, const string& _email, const char _filename[]) {
+	static_assert(std::is_base_of<User, T>::value, "T must inherit from User"); // Check if T inherits User class
+	ifstream fin;
+	fin.open(_filename, std::ios::binary);
+	if (fin.fail()) {
+		fin.close();
+		return false;
+	}
+	while (!fin.eof()) {
+		T _record;
+		if (_username == _record.username() || _email == _record.email()) return true;
+	}
+	return false;
+}
+
+template <class T>
+bool userio::authenticate(const string& _username, const string& _password, const char _filename[]) {
+	static_assert(std::is_base_of<User, T>::value, "T must inherit from User");
+	ifstream fin;
+	fin.open(_filename, std::ios::binary);
+	if (fin.fail()) {
+		fin.close();
+		return false;
+	}
+	while (!fin.eof()) {
+		T _record;
+		fin >> _record;
+		if (_username == _record.username() && _password == _record.password()) return true;
+		if (_username == _record.username() && _password != _record.password()) return false;
+	}
+	return false;
+}
+
+
+template <class T>
 T userio::select(const string& _username, const char _filename[]) {
+	static_assert(std::is_base_of<User, T>::value, "T must inherit from User");
 	ifstream fin;
 	fin.open(_filename, std::ios::binary);
 	if (fin.fail()) {

@@ -102,7 +102,7 @@ int main() {
 	}
 
 	user->viewStocks();
-	int action;
+	char action;
 	if (userType == userTypes::customer) {
 		Customer* customer = static_cast<Customer*>(user);
 		do {

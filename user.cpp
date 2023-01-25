@@ -118,36 +118,36 @@ const unsigned int User::age(void)const {
 }
 
 //
-const bool User::createAccount(void) {
-	if (userio::exist(this->_username, this->_email, filenames::users)) return false;
-	insert(*this, filenames::users);
-	return true;
-}
-const bool User::modifyAccount(void) {
-	User _userRecord = select<User>(this->_id, filenames::users);
-	if (_userRecord == User()) return false;
-	update(*this, filenames::users);
-	return true;
-}
-const bool User::deleteAccount(void) {
-	if (!userio::exist(this->_username, this->_email, filenames::users)) return false;
-	delete1(*this, filenames::users);
-	return true;
-}
-const bool User::login(void) {
-	if (userio::authenticate(this->_username, this->_password, filenames::users)) {
-		*this = userio::select(this->_username, filenames::users);
-		this->_loggedIn = true;
-		return true;
-	}
-	this->_loggedIn = false;
-	return false;
-}
-const bool User::logout(void) {
-	if (!this->_loggedIn) return false;
-	this->_loggedIn = false;
-	return true;
-}
+//const bool User::createAccount(void) {
+//	if (userio::exist(this->_username, this->_email, filenames::users)) return false;
+//	insert(*this, filenames::users);
+//	return true;
+//}
+//const bool User::modifyAccount(void) {
+//	User _userRecord = select<User>(this->_id, filenames::users);
+//	if (_userRecord == User()) return false;
+//	update(*this, filenames::users);
+//	return true;
+//}
+//const bool User::deleteAccount(void) {
+//	if (!userio::exist(this->_username, this->_email, filenames::users)) return false;
+//	delete1(*this, filenames::users);
+//	return true;
+//}
+//const bool User::login(void) {
+//	if (userio::authenticate(this->_username, this->_password, filenames::users)) {
+//		*this = userio::select(this->_username, filenames::users);
+//		this->_loggedIn = true;
+//		return true;
+//	}
+//	this->_loggedIn = false;
+//	return false;
+//}
+//const bool User::logout(void) {
+//	if (!this->_loggedIn) return false;
+//	this->_loggedIn = false;
+//	return true;
+//}
 void User::viewStocks(const string _category)const {
 	vector<Product> _products;
 	if (_category == "All") _products = select<Product>(filenames::products);
@@ -156,9 +156,8 @@ void User::viewStocks(const string _category)const {
 		_products[i].display();
 }
 bool User::operator==(const User& _user) {
-	if (this->_firstname == _user._firstname && this->_lastname == _user._lastname && this->_username == _user._username && this->_email == _user._email && this->_password == _user._password)
-		return true;
-	return false;
+	return (this->_firstname == _user._firstname && this->_lastname == _user._lastname &&
+		this->_username == _user._username && this->_email == _user._email && this->_password == _user._password && this->_birthday == _user._birthday);
 }
 istream& operator>>(istream& in, User& _user) {
 	in >> _user._id >> _user._firstname >> _user._lastname >> _user._username
@@ -169,9 +168,4 @@ ostream& operator<<(ostream& out, const User& _user) {
 	out << _user._id << '\t' << _user._firstname << '\t' << _user._lastname << '\t' << _user._username
 		<< '\t' << _user._email << '\t' << _user._password << '\t' << _user._birthday;
 	return out;
-}
-istringstream& operator>>(istringstream& sin, User& _user) {
-	sin >> _user._id >> _user._firstname >> _user._lastname >> _user._username
-		>> _user._email >> _user._password >> _user._birthday;
-	return sin;
 }
