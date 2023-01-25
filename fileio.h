@@ -31,32 +31,32 @@ namespace filenames {
 
 // General
 template <class T>
-void insert(const T&, const string&);
+void insert(const T&, const char[]);
 
 template <class T>
-T select(const unsigned int&, const string&);
+T select(const unsigned int&, const char[]);
 
 template <class T>
 vector<T> select(const string&);
 
 template <class T>
-void update(const T&, const string&);
+void update(const T&, const char[]);
 
 template <class T>
-void delete1(const T&, const char _filename[]);
+void delete1(const T&, const char[]);
 
 namespace userio {
 	template <class T>
-	bool exist(const string&, const string&, const char _filename[]);
+	bool exist(const string&, const string&, const char[]);
 	template <class T>
-	bool authenticate(const string&, const string&, const char _filename[]);
+	bool authenticate(const string&, const string&, const char[]);
 	template <class T = User>
-	T select(const string&, const char _filename[]);
+	T select(const string&, const char[]);
 }
 
 namespace productio {
-	bool exist(const string&, const char _filename[]);
-	vector<Product> select(const string&, const char _filename[]);
+	bool exist(const string&, const char[]);
+	vector<Product> select(const string&, const char[]);
 }
 
 // general
