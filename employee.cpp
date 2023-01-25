@@ -93,7 +93,7 @@ istream& operator>>(istream& in, Employee& _employee) {
 
 ostream& operator<<(ostream& out, const Employee& _employee) {
 	const User* _user = &_employee;
-	cout << *_user << '\t' << _employee._wage;
+	out << *_user << '\t' << _employee._wage;
 	delete _user;
 	return out;
 }

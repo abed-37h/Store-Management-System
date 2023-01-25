@@ -116,7 +116,7 @@ int main() {
 				<< "\t7.Exit" << endl;
 			action = _getch();
 			system("cls");
-		} while (action != 7);
+		} while (action != '7');
 
 		delete customer;
 	}
@@ -130,7 +130,7 @@ int main() {
 				<< "\t3.Exit" << endl;
 			action = _getch();
 			system("cls");
-		} while (action != 3);
+		} while (action != '3');
 
 		delete employee;
 	}
@@ -146,10 +146,12 @@ int main() {
 				<< "\t5.Exit" << endl;
 			action = _getch();
 			system("cls");
-		} while (action != 5);
+		} while (action != '5');
 
 		delete dealer;
 	}
 
 	delete user;
+
+	return 0;
 }

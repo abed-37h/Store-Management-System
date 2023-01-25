@@ -107,7 +107,7 @@ istream& operator>>(istream& in, Customer& _customer) {
 
 ostream& operator<<(ostream& out, const Customer& _customer) {
 	const User* _user = &_customer;
-	cout << *_user << '\t' << _customer._balance;
+	out << *_user << '\t' << _customer._balance;
 	delete _user;
 	return out;
 }

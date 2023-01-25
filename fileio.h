@@ -21,12 +21,12 @@ namespace filenames {
 	const char usersdir[] = "users/";
 	const char productsdir[] = "products/";
 	// filenames
-	const char users[] = "users.dat";
-	const char customers[] = "customers.dat";
-	const char employees[] = "employees.dat";
-	const char dealers[] = "dealers.dat";
-	const char products[] = "products.dat";
-	const char temp[] = "temp.dat";
+	const char users[] = "users.txt";
+	const char customers[] = "customers.txt";
+	const char employees[] = "employees.txt";
+	const char dealers[] = "dealers.txt";
+	const char products[] = "products.txt";
+	const char temp[] = "temp.txt";
 }
 
 // General
