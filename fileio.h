@@ -18,14 +18,14 @@ using std::endl;
 
 namespace filenames {
 // directory
-const string usersdir = "users/";
-const string productsdir = "products/";
+const char usersdir[] = "users/";
+const char productsdir[] = "products/";
 // filenames
-const string users = "users.dat";
-const string customers = "customers.dat";
-const string employees = "employees.dat";
-const string dealers = "dealers.dat";
-const string products = "products.dat";
+const char users[] = "users.dat";
+const char customers[] = "customers.dat";
+const char employees[] = "employees.dat";
+const char dealers[] = "dealers.dat";
+const char products[] = "products.dat";
 }
 
 // General
@@ -42,23 +42,23 @@ template <class T>
 void update(const T&, const string&);
 
 template <class T>
-void delete1(const T&, const string&);
+void delete1(const T&, const char _filename[]);
 
 namespace userio {
-	bool exist(const string&, const string&, const string&);
-	bool authenticate(const string&, const string&, const string&);
+	bool exist(const string&, const string&, const char _filename[]);
+	bool authenticate(const string&, const string&, const char _filename[]);
 	template <class T = User>
-	T select(const string&, const string&);
+	T select(const string&, const char _filename[]);
 }
 
 namespace productio {
-	bool exist(const string&, const string&);
-	vector<Product> select(const string&, const string&);
+	bool exist(const string&, const char _filename[]);
+	vector<Product> select(const string&, const char _filename[]);
 }
 
 // general
 template <class T>
-void insert(const T& _object, const string& _filename) {
+void insert(const T& _object, const char _filename[]) {
 	ofstream fout;
 	fout.open(_filename, std::ios::binary | std::ios::app);
 	// TODO: give an id
@@ -67,7 +67,7 @@ void insert(const T& _object, const string& _filename) {
 }
 
 template <class T>
-T select(const unsigned int& _id, const string& _filename) {
+T select(const unsigned int& _id, const char _filename[]) {
 	ifstream fin;
 	fin.open(_filename, std::ios::binary);
 	if (fin.fail()) {
@@ -105,7 +105,7 @@ vector<T> select(const string& _filename) {
 }
 
 template <class T>
-void update(const T& _object, const string& _filename) {
+void update(const T& _object, const char _filename[]) {
 	ifstream fin;
 	ofstream nout;
 	fin.open(_filename, std::ios::binary);
@@ -127,7 +127,7 @@ void update(const T& _object, const string& _filename) {
 }
 
 template <class T>
-void delete1(const T& _object, const string& _filename) {
+void delete1(const T& _object, const char _filename[]) {
 	ifstream fin;
 	ofstream nout;
 	fin.open(_filename, std::ios::binary);
@@ -149,7 +149,7 @@ void delete1(const T& _object, const string& _filename) {
 
 // user
 template <class T>
-T userio::select(const string& _username, const string& _filename) {
+T userio::select(const string& _username, const char _filename[]) {
 	ifstream fin;
 	fin.open(_filename, std::ios::binary);
 	if (fin.fail()) {

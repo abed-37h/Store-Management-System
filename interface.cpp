@@ -6,7 +6,7 @@ int main() {
 
 	prompt:
 	cout << "Do you have an account? [y/n] ";
-	char answer = getch();
+	char answer = _getch();
 	system("cls");
 
 	bool success;
@@ -23,8 +23,8 @@ int main() {
 		cout << "Register" << endl;
 		cout << "\tChoose your account type:" << endl
 			<< "\t\t1.Dealer" << "\t\t2.Employee" << "\t\t3.Customer" << endl;
-		int userTypeInput;
-		cin >> userTypeInput;
+		/*int userTypeInput;
+		cin >> userTypeInput;*/
 		userType = static_cast<userTypes>(input<int>());
 		do {
 			string firstname = input<string>("\tFirstname: ");
@@ -107,14 +107,16 @@ int main() {
 		Customer* customer = static_cast<Customer*>(user);
 		do {
 			cout << "Choose an action to do:" << endl
-				<< "\t1.Add product to card" << endl
-				<< "\t2.Modify the quantity of an added product" << endl
-				<< "\t3.Remove item from cart" << endl
-				<< "\t4.View cart" << endl
-				<< "\t5.Purchase Items" << endl
-				<< "\t6.Logout";
-			action = input<int>();
-		} while (action != 6);
+				<< "\t1.Profile" << endl
+				<< "\t2.Add product to card" << endl
+				<< "\t3.Modify the quantity of an added product" << endl
+				<< "\t4.Remove item from cart" << endl
+				<< "\t5.View cart" << endl
+				<< "\t6.Purchase Items" << endl
+				<< "\t7.Exit" << endl;
+			action = _getch();
+			system("cls");
+		} while (action != 7);
 
 		delete customer;
 	}
@@ -123,10 +125,12 @@ int main() {
 		Employee* employee = static_cast<Employee*>(user);
 		do {
 			cout << "Choose an action to do:" << endl
-				<< "\t1.Refill product" << endl
-				<< "\t2.Logout";
-			action = input<int>();
-		} while (action != 2);
+				<< "\t1.Profile" << endl
+				<< "\t2.Refill product" << endl
+				<< "\t3.Exit" << endl;
+			action = _getch();
+			system("cls");
+		} while (action != 3);
 
 		delete employee;
 	}
@@ -135,12 +139,14 @@ int main() {
 		Dealer* dealer = static_cast<Dealer*>(user);
 		do {
 			cout << "Choose an action to do:" << endl
-				<< "\t1.Add new product" << endl
-				<< "\t2.Refill product" << endl
-				<< "\t3.Remove a product" << endl
-				<< "\t4.Logout";
-			action = input<int>();
-		} while (action != 3);
+				<< "\t1.Profile" << endl
+				<< "\t2.Add new product" << endl
+				<< "\t3.Refill product" << endl
+				<< "\t4.Remove a product" << endl
+				<< "\t5.Exit" << endl;
+			action = _getch();
+			system("cls");
+		} while (action != 5);
 
 		delete dealer;
 	}

@@ -1,7 +1,7 @@
 #include "fileio.h"
 
 // user
-bool userio::exist(const string& _username, const string& _email, const string& _filename) {
+bool userio::exist(const string& _username, const string& _email, const char _filename[]) {
 	ifstream fin;
 	fin.open(_filename, std::ios::binary);
 	if (fin.fail()) {
@@ -15,7 +15,7 @@ bool userio::exist(const string& _username, const string& _email, const string& 
 	return false;
 }
 
-bool userio::authenticate(const string& _username, const string& _password, const string& _filename) {
+bool userio::authenticate(const string& _username, const string& _password, const char _filename[]) {
 	ifstream fin;
 	fin.open(_filename, std::ios::binary);
 	if (fin.fail()) {
@@ -32,7 +32,7 @@ bool userio::authenticate(const string& _username, const string& _password, cons
 }
 
 // product
-bool productio::exist(const string& _name, const string& _filename) {
+bool productio::exist(const string& _name, const char _filename[]) {
 	ifstream fin;
 	fin.open(_filename, std::ios::binary);
 	if (fin.fail()) {
@@ -47,7 +47,7 @@ bool productio::exist(const string& _name, const string& _filename) {
 	return false;
 }
 
-vector<Product> productio::select(const string& _category, const string& _filename) {
+vector<Product> productio::select(const string& _category, const char _filename[]) {
 	ifstream fin;
 	fin.open(_filename, std::ios::binary);
 	vector<Product> _records;

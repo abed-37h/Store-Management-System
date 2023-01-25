@@ -159,6 +159,7 @@
     <ClCompile Include="product.cpp" />
     <ClCompile Include="interface.cpp" />
     <ClCompile Include="user.cpp" />
+    <ClCompile Include="utilities.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

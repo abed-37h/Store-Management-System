@@ -137,9 +137,11 @@ const bool User::deleteAccount(void) {
 const bool User::login(void) {
 	if (userio::authenticate(this->_username, this->_password, filenames::users)) {
 		*this = userio::select(this->_username, filenames::users);
-		return this->_loggedIn = true;
+		this->_loggedIn = true;
+		return true;
 	}
-	return this->_loggedIn = false;
+	this->_loggedIn = false;
+	return false;
 }
 const bool User::logout(void) {
 	if (!this->_loggedIn) return false;
