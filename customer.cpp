@@ -28,29 +28,29 @@ const double Customer::balance(void)const {
 }
 
 const bool Customer::createAccount(void) {
-	if (userio::exist<Customer>(this->username(), this->email(), filenames::customers)) return false;
-	if (userio::exist<Employee>(this->username(), this->email(), filenames::employees)) return false;
-	if (userio::exist<Dealer>(this->username(), this->email(), filenames::dealers)) return false;
-	insert(*this, filenames::customers);
+	if (userio::exist<Customer>(this->username(), this->email())) return false;
+	if (userio::exist<Employee>(this->username(), this->email())) return false;
+	if (userio::exist<Dealer>(this->username(), this->email())) return false;
+	insert(*this);
 	return true;
 }
 
 const bool Customer::modifyAccount(void) {
-	Customer _userRecord = select<Customer>(this->id(), filenames::customers);
+	Customer _userRecord = select<Customer>(this->id());
 	if (_userRecord == Customer()) return false;
-	update(*this, filenames::customers);
+	update(*this);
 	return true;
 }
 
 const bool Customer::deleteAccount(void) {
-	if (!userio::exist<Customer>(this->username(), this->email(), filenames::customers)) return false;
-	delete1(*this, filenames::customers);
+	if (!userio::exist<Customer>(this->username(), this->email())) return false;
+	delete1(*this);
 	return true;
 }
 
 const bool Customer::login(void) {
-	if (userio::authenticate<Customer>(this->username(), this->password(), filenames::customers)) {
-		*this = userio::select<Customer>(this->username(), filenames::customers);
+	if (userio::authenticate<Customer>(this->username(), this->password())) {
+		*this = userio::select<Customer>(this->username());
 		this->_loggedIn = true;
 		return true;
 	}

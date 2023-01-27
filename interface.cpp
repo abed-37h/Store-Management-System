@@ -1,4 +1,5 @@
 #include "utilities.h"
+#include <Windows.h>
 
 int main() {
 	const string welcome = "***************** WELCOME TO OUR STORE *****************";
@@ -35,17 +36,17 @@ int main() {
 			Date birthday = input<Date>("\tBirthDay (yyyy-mm-dd): ");
 
 			if (userType == userTypes::dealer) {
-				delete user;
+				//delete user;
 				user = new Dealer(firstname, lastname, username, email, password, birthday);
 			}
 			
 			else if (userType == userTypes::employee) {
-				delete user;
+				//delete user;
 				user = new Employee(firstname, lastname, username, email, password, birthday);
 			}
 			
 			else if (userType == userTypes::customer) {
-				delete user;
+				//delete user;
 				double balance = input<double>("\tYour Balance: ");
 				user = new Customer(firstname, lastname, username, email, password, birthday, balance);
 			}

@@ -1,17 +1,10 @@
 #pragma once
-#include "user.h"
-#include "customer.h"
-#include "employee.h"
-#include "dealer.h"
-#include "product.h"
+#include "utilities.h"
 #include <fstream>
-#include <sstream>
-#include <string>
 #include <vector>
 
 using std::ifstream;
 using std::ofstream;
-using std::string;
 using std::vector;
 using std::getline;
 using std::endl;
@@ -27,52 +20,63 @@ namespace filenames {
 	const char dealers[] = "dealers.txt";
 	const char products[] = "products.txt";
 	const char temp[] = "temp.txt";
+
+	template <class T>
+	inline const char* chooseFilename(T& _object) {
+		if (instanceof<Customer>(_object)) return customers;
+		if (instanceof<Employee>(_object)) return employees;
+		if (instanceof<Dealer>(_object)) return dealers;
+		if (instanceof<Product>(_object)) return products;
+	}
 }
 
 // General
 template <class T>
-void insert(const T&, const char[]);
+void insert(const T&);
 
 template <class T>
-T select(const unsigned int&, const char[]);
+T select(const unsigned int&);
 
 template <class T>
-vector<T> select(const string&);
+vector<T> select(void);
 
 template <class T>
-void update(const T&, const char[]);
+void update(const T&);
 
 template <class T>
-void delete1(const T&, const char[]);
+void delete1(const T&);
 
+// User namespace
 namespace userio {
 	template <class T>
-	bool exist(const string&, const string&, const char[]);
+	bool exist(const string&, const string&);
 	template <class T>
-	bool authenticate(const string&, const string&, const char[]);
+	bool authenticate(const string&, const string&);
 	template <class T = User>
-	T select(const string&, const char[]);
+	T select(const string&);
 }
 
+// Product namespace
 namespace productio {
-	bool exist(const string&, const char[]);
-	vector<Product> select(const string&, const char[]);
+	bool exist(const string&);
+	vector<Product> select(const string&);
 }
 
 // general
 template <class T>
-void insert(const T& _object, const char _filename[]) {
+void insert(const T& _object) {
 	ofstream fout;
-	fout.open(_filename, std::ios::binary | std::ios::app);
+	fout.open(filenames::chooseFilename(_object), std::ios::binary | std::ios::app);
 	// TODO: give an id
 	fout << _object << endl;
 	fout.close();
 }
 
 template <class T>
-T select(const unsigned int& _id, const char _filename[]) {
+T select(const unsigned int& _id) {
+	T _object;
 	ifstream fin;
-	fin.open(_filename, std::ios::binary);
+	fin.open(filenames::chooseFilename(_object), std::ios::binary);
 	if (fin.fail()) {
 		fin.close();
 		return T();
@@ -90,9 +94,10 @@ T select(const unsigned int& _id, const char _filename[]) {
 }
 
 template <class T>
-vector<T> select(const string& _filename) {
+vector<T> select(void) {
+	T _object;
 	ifstream fin;
-	fin.open(_filename, std::ios::binary);
+	fin.open(filenames::chooseFilename(_object), std::ios::binary);
 	vector<T> _records;
 	if (fin.fail()) {
 		fin.close();
@@ -108,10 +113,10 @@ vector<T> select(const string& _filename) {
 }
 
 template <class T>
-void update(const T& _object, const char _filename[]) {
+void update(const T& _object) {
 	ifstream fin;
 	ofstream nout;
-	fin.open(_filename, std::ios::binary);
+	fin.open(filenames::chooseFilename(_object), std::ios::binary);
 	if (fin.fail()) {
 		fin.close();
 		return;
@@ -125,15 +130,15 @@ void update(const T& _object, const char _filename[]) {
 	}
 	fin.close();
 	nout.close();
-	remove(_filename);
-	rename(filenames::temp, _filename);
+	remove(filenames::chooseFilename(_object));
+	rename(filenames::temp, filenames::chooseFilename(_object));
 }
 
 template <class T>
-void delete1(const T& _object, const char _filename[]) {
+void delete1(const T& _object) {
 	ifstream fin;
 	ofstream nout;
-	fin.open(_filename, std::ios::binary);
+	fin.open(filenames::chooseFilename(_object), std::ios::binary);
 	if (fin.fail()) {
 		fin.close();
 		return;
@@ -146,16 +151,17 @@ void delete1(const T& _object, const char _filename[]) {
 	}
 	fin.close();
 	nout.close();
-	remove(_filename);
-	rename(filenames::temp, _filename);
+	remove(filenames::chooseFilename(_object));
+	rename(filenames::temp, filenames::chooseFilename(_object));
 }
 
 // user
 template <class T>
-bool userio::exist(const string& _username, const string& _email, const char _filename[]) {
+bool userio::exist(const string& _username, const string& _email) {
 	static_assert(std::is_base_of<User, T>::value, "T must inherit from User"); // Check if T inherits User class
+	T _user;
 	ifstream fin;
-	fin.open(_filename, std::ios::binary);
+	fin.open(filenames::chooseFilename(_user), std::ios::binary);
 	if (fin.fail()) {
 		fin.close();
 		return false;
@@ -168,10 +174,11 @@ bool userio::exist(const string& _username, const string& _email, const char _fi
 }
 
 template <class T>
-bool userio::authenticate(const string& _username, const string& _password, const char _filename[]) {
+bool userio::authenticate(const string& _username, const string& _password) {
 	static_assert(std::is_base_of<User, T>::value, "T must inherit from User");
+	T _user;
 	ifstream fin;
-	fin.open(_filename, std::ios::binary);
+	fin.open(filenames::chooseFilename(_user), std::ios::binary);
 	if (fin.fail()) {
 		fin.close();
 		return false;
@@ -187,10 +194,11 @@ bool userio::authenticate(const string& _username, const string& _password, cons
 
 
 template <class T>
-T userio::select(const string& _username, const char _filename[]) {
+T userio::select(const string& _username) {
 	static_assert(std::is_base_of<User, T>::value, "T must inherit from User");
+	T _user;
 	ifstream fin;
-	fin.open(_filename, std::ios::binary);
+	fin.open(filenames::chooseFilename(_user), std::ios::binary);
 	if (fin.fail()) {
 		fin.close();
 		return T();

@@ -32,9 +32,9 @@
 //}
 
 // product
-bool productio::exist(const string& _name, const char _filename[]) {
+bool productio::exist(const string& _name) {
 	ifstream fin;
-	fin.open(_filename, std::ios::binary);
+	fin.open(filenames::products, std::ios::binary);
 	if (fin.fail()) {
 		fin.close();
 		return false;
@@ -47,9 +47,9 @@ bool productio::exist(const string& _name, const char _filename[]) {
 	return false;
 }
 
-vector<Product> productio::select(const string& _category, const char _filename[]) {
+vector<Product> productio::select(const string& _category) {
 	ifstream fin;
-	fin.open(_filename, std::ios::binary);
+	fin.open(filenames::products, std::ios::binary);
 	vector<Product> _records;
 	if (fin.fail()) {
 		fin.close();

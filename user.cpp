@@ -150,8 +150,8 @@ const unsigned int User::age(void)const {
 //}
 void User::viewStocks(const string _category)const {
 	vector<Product> _products;
-	if (_category == "All") _products = select<Product>(filenames::products);
-	else _products = productio::select(_category, filenames::products);
+	if (_category == "All") _products = select<Product>();
+	else _products = productio::select(_category);
 	for (unsigned int i = 0; i < _products.size(); i++)
 		_products[i].display();
 }

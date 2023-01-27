@@ -53,7 +53,7 @@ const double Cart::purchase(void) {
 	for (auto pair : this->_products) {
 		Product _product = pair.first;
 		_product -= pair.second;
-		update(_product, filenames::products);
+		update(_product);
 	}
 	const double temp = this->_totalPrice;
 	this->clear();

@@ -28,30 +28,29 @@ const double Employee::wage(void)const {
 }
 
 const bool Employee::createAccount(void) {
-	if (userio::exist<Customer>(this->username(), this->email(), filenames::customers)) return false;
-	if (userio::exist<Employee>(this->username(), this->email(), filenames::employees)) return false;
-	if (userio::exist<Dealer>(this->username(), this->email(), filenames::dealers)) return false;
-	insert(*this, filenames::customers);
-	insert(*this, filenames::employees);
+	if (userio::exist<Customer>(this->username(), this->email())) return false;
+	if (userio::exist<Employee>(this->username(), this->email())) return false;
+	if (userio::exist<Dealer>(this->username(), this->email())) return false;
+	insert(*this);
 	return true;
 }
 
 const bool Employee::modifyAccount(void) {
-	Employee _userRecord = select<Employee>(this->id(), filenames::employees);
+	Employee _userRecord = select<Employee>(this->id());
 	if (_userRecord == Employee()) return false;
-	update(*this, filenames::employees);
+	update(*this);
 	return true;
 }
 
 const bool Employee::deleteAccount(void) {
-	if (!userio::exist<Employee>(this->username(), this->email(), filenames::employees)) return false;
-	delete1(*this, filenames::employees);
+	if (!userio::exist<Employee>(this->username(), this->email())) return false;
+	delete1(*this);
 	return true;
 }
 
 const bool Employee::login(void) {
-	if (userio::authenticate<Employee>(this->username(), this->password(), filenames::employees)) {
-		*this = userio::select<Employee>(this->username(), filenames::employees);
+	if (userio::authenticate<Employee>(this->username(), this->password())) {
+		*this = userio::select<Employee>(this->username());
 		this->_loggedIn = true;
 		return true;
 	}
@@ -66,9 +65,9 @@ const bool Employee::logout(void) {
 }
 
 const bool Employee::refill(Product _product, const unsigned int _quantity) {
-	if (!productio::exist(_product.name(), filenames::products)) return false;
+	if (!productio::exist(_product.name())) return false;
 	_product += _quantity;
-	update(_product, filenames::products);
+	update(_product);
 	return true;
 }
 
