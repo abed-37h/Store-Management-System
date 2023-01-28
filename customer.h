@@ -19,9 +19,9 @@ public:
     const bool deleteAccount(void);
     const bool login(void);
     const bool logout(void);
-    const bool addProductToCart(const Product, const unsigned int = 1);
-    const bool modifyProductQunatityInCart(const Product, const unsigned int);
-    const bool removeProductFromCart(const Product);
+    const bool addProductToCart(const string, const unsigned int = 1);
+    const bool modifyProductQunatityInCart(const string, const unsigned int);
+    const bool removeProductFromCart(const string);
     void viewCart(void)const;
     bool purchase(void);
     bool operator==(const Customer&);

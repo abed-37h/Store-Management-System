@@ -39,7 +39,7 @@ template <class T>
 T select(const unsigned int&);
 
 template <class T>
-vector<T> select(void);
+vector<T> selectSet(void);
 
 template <class T>
 void update(const T&);
@@ -61,7 +61,8 @@ namespace userio {
 namespace productio {
 	bool exist(const unsigned int&);
 	bool exist(const string&);
-	vector<Product> select(const string&);
+	Product select(const string&);
+	vector<Product> selectSet(const string&);
 }
 
 // general
@@ -96,7 +97,7 @@ T select(const unsigned int& _id) {
 }
 
 template <class T>
-vector<T> select(void) {
+vector<T> selectSet(void) {
 	T _object;
 	ifstream fin;
 	fin.open(filenames::chooseFilename(_object), std::ios::binary);

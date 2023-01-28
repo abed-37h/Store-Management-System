@@ -64,15 +64,19 @@ const bool Customer::logout(void) {
 	return true;
 }
 
-const bool Customer::addProductToCart(const Product _product, const unsigned int _quantity) {
+const bool Customer::addProductToCart(const string _name, const unsigned int _quantity) {
+	const Product _product = productio::select(_name);
 	return this->_cart.addProduct(_product, _quantity);
 }
 
-const bool Customer::modifyProductQunatityInCart(const Product _product, const unsigned int _quantity) {
+
+const bool Customer::modifyProductQunatityInCart(const string _name, const unsigned int _quantity) {
+	const Product _product = productio::select(_name);
 	return this->_cart.modifyProductQuantity(_product, _quantity);
 }
 
-const bool Customer::removeProductFromCart(const Product _product) {
+const bool Customer::removeProductFromCart(const string _name) {
+	const Product _product = productio::select(_name);
 	return this->_cart.removeProduct(_product);
 }
 
@@ -83,6 +87,7 @@ void Customer::viewCart(void)const {
 bool Customer::purchase(void) {
 	if (this->_cart.totalPrice() > _balance) return false;
 	_balance -= _cart.purchase();
+	//update(*this); // Causes wierd problem
 	return true;
 }
 

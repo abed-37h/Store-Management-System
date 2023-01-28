@@ -114,14 +114,48 @@ int main() {
 		string command;
 		do {
 			cout << "Choose an action to do:" << endl
-				<< "\t1.Profile" << endl
-				<< "\t2.Add product to card" << endl
-				<< "\t3.Modify the quantity of an added product" << endl
-				<< "\t4.Remove item from cart" << endl
-				<< "\t5.View cart" << endl
-				<< "\t6.Purchase Items" << endl
-				<< "\t7.Exit" << endl;
+				<< "\t1.Profile < show-profile >" << endl
+				<< "\t2.Add product to card < add {product-name} [quantity] >" << endl
+				<< "\t3.Modify the quantity of an added product < modify|edit {product-name} {quantity} >" << endl
+				<< "\t4.Remove item from cart < remove {product-name} >" << endl
+				<< "\t5.View cart < view-cart >" << endl
+				<< "\t6.Purchase Items < purchase >" << endl
+				<< "\t7.Exit < exit >" << endl;
 			cin >> command;
+			if (command == "show-profile") {
+				// TODO: implement
+			}
+			else if (command == "add") {
+				Product product;
+				string name;
+				cin >> name;
+				product.name(name);
+				if (!cin) {
+					customer->addProductToCart(name);
+				}
+				else {
+					unsigned int quantity;
+					cin >> quantity;
+					customer->addProductToCart(name, quantity);
+				}
+			}
+			else if (command == "modify" || command == "edit") {
+				string name;
+				unsigned int quantity;
+				cin >> name >> quantity;
+				customer->modifyProductQunatityInCart(name, quantity);
+			}
+			else if (command == "remove") {
+				string name;
+				cin >> name;
+				customer->removeProductFromCart(name);
+			}
+			else if (command == "view-cart") {
+				customer->viewCart();
+			}
+			else if (command == "purchase") {
+				customer->purchase();
+			}
 			system("cls");
 		} while (command != "exit");
 
@@ -133,9 +167,9 @@ int main() {
 		string command;
 		do {
 			cout << "Choose an action to do:" << endl
-				<< "\t1.Profile" << endl
-				<< "\t2.Refill product" << endl
-				<< "\t3.Exit" << endl;
+				<< "\t1.Profile < show-profile >" << endl
+				<< "\t2.Refill product < refill {id} {quantity} >" << endl
+				<< "\t3.Exit < exit >" << endl;
 			cin >> command;
 			if (command == "show-profile") {
 				// TODO: implement

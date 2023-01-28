@@ -1,2 +1,2 @@
-1	Ideapad_Gaming	Lenovo	Laptops	700	13
-3	MacBook_Pro	Apple	Laptops	1000	29
+1	Ideapad_Gaming	Lenovo	Laptops	700	7
+3	MacBook_Pro	Apple	Laptops	1000	24

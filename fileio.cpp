@@ -31,6 +31,7 @@
 //	return false;
 //}
 
+// product
 bool productio::exist(const unsigned int& _id) {
 	ifstream fin;
 	fin.open(filenames::products, std::ios::binary);
@@ -46,7 +47,6 @@ bool productio::exist(const unsigned int& _id) {
 	return false;
 }
 
-// product
 bool productio::exist(const string& _name) {
 	ifstream fin;
 	fin.open(filenames::products, std::ios::binary);
@@ -62,7 +62,26 @@ bool productio::exist(const string& _name) {
 	return false;
 }
 
-vector<Product> productio::select(const string& _category) {
+Product productio::select(const string& _name) {
+	ifstream fin;
+	fin.open(filenames::products, std::ios::binary);
+	if (fin.fail()) {
+		fin.close();
+		return Product();
+	}
+	while (!fin.eof()) {
+		Product _record;
+		fin >> _record;
+		if (_record.name() == _name) {
+			fin.close();
+			return _record;
+		}
+	}
+	fin.close();
+	return Product();
+}
+
+vector<Product> productio::selectSet(const string& _category) {
 	ifstream fin;
 	fin.open(filenames::products, std::ios::binary);
 	vector<Product> _records;
