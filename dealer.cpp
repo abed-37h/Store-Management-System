@@ -24,7 +24,6 @@ const bool Dealer::createAccount(void) {
 	if (userio::exist<Employee>(this->username(), this->email())) return false;
 	if (userio::exist<Dealer>(this->username(), this->email())) return false;
 	insert(*this);
-	insert(*this);
 	return true;
 }
 
@@ -37,16 +36,18 @@ const bool Dealer::modifyAccount(void) {
 
 const bool Dealer::deleteAccount(void) {
 	if (!userio::exist<Dealer>(this->username(), this->email())) return false;
-	delete1(*this);
+	delete1<Dealer>(this->id());
 	return true;
 }
 
 const bool Dealer::login(void) {
 	if (userio::authenticate<Dealer>(this->username(), this->password())) {
 		*this = userio::select<Dealer>(this->username());
-		return this->_loggedIn = true;
+		this->_loggedIn = true;
+		return true;
 	}
-	return this->_loggedIn = false;
+	this->_loggedIn = false;
+	return false;
 }
 
 const bool Dealer::logout(void) {
@@ -61,14 +62,15 @@ const bool Dealer::addItem(const Product _product) {
 	return true;
 }
 
-const bool Dealer::removeItem(const Product _product) {
-	if (!productio::exist(_product.name())) return false;
-	delete1(_product);
+const bool Dealer::removeItem(const unsigned int _id) {
+	if (!productio::exist(_id)) return false;
+	delete1<Product>(_id);
 	return true;
 }
 
-const bool Dealer::refill(Product _product, const unsigned int _quantity) {
-	if (!productio::exist(_product.name())) return false;
+const bool Dealer::refill(const unsigned int _id, const unsigned int _quantity) {
+	if (!productio::exist(_id)) return false;
+	Product _product = select<Product>(_id);
 	_product += _quantity;
 	update(_product);
 	return true;

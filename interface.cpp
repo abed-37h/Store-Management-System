@@ -1,5 +1,10 @@
 #include "utilities.h"
 #include <Windows.h>
+#include <sstream>
+
+using std::istringstream;
+using std::getline;
+using std::count;
 
 int main() {
 	const string welcome = "***************** WELCOME TO OUR STORE *****************";
@@ -103,9 +108,10 @@ int main() {
 	}
 
 	user->viewStocks();
-	char action;
+	string action;
 	if (userType == userTypes::customer) {
 		Customer* customer = static_cast<Customer*>(user);
+		string command;
 		do {
 			cout << "Choose an action to do:" << endl
 				<< "\t1.Profile" << endl
@@ -115,39 +121,83 @@ int main() {
 				<< "\t5.View cart" << endl
 				<< "\t6.Purchase Items" << endl
 				<< "\t7.Exit" << endl;
-			action = _getch();
+			cin >> command;
 			system("cls");
-		} while (action != '7');
+		} while (command != "exit");
 
 		delete customer;
 	}
 
 	else if (userType == userTypes::employee) {
 		Employee* employee = static_cast<Employee*>(user);
+		string command;
 		do {
 			cout << "Choose an action to do:" << endl
 				<< "\t1.Profile" << endl
 				<< "\t2.Refill product" << endl
 				<< "\t3.Exit" << endl;
-			action = _getch();
+			cin >> command;
+			if (command == "show-profile") {
+				// TODO: implement
+			}
+			else if (command == "refill") {
+				unsigned int id;
+				unsigned int quantity;
+				cin >> id >> quantity;
+				employee->refill(id, quantity);
+			}
 			system("cls");
-		} while (action != '3');
+		} while (command != "exit");
 
 		delete employee;
 	}
 
 	else if (userType == userTypes::dealer) {
 		Dealer* dealer = static_cast<Dealer*>(user);
+		string command;
 		do {
 			cout << "Choose an action to do:" << endl
-				<< "\t1.Profile" << endl
-				<< "\t2.Add new product" << endl
-				<< "\t3.Refill product" << endl
-				<< "\t4.Remove a product" << endl
-				<< "\t5.Exit" << endl;
-			action = _getch();
+				<< "\t1.Profile < show-profile >" << endl
+				<< "\t2.Add new product < add {name} {brand} {category} {price} {quanity} >" << endl
+				<< "\t3.Refill product < refill {id} {quantity} >" << endl
+				<< "\t4.Remove a product < remove {product-id} >" << endl
+				<< "\t5.Exit < exit >" << endl;
+			//action = _getch();
+			/*getline(cin, action);
+			action = strip(action);
+			istringstream sin(action);*/
+			
+			cin >> command;
+			if (command == "show-profile") {
+				// TODO: implement
+			}
+			else if (command == "add") {
+				//int spaces = count(action.begin(), action.end(), ' ');
+				string name;
+				string brand;
+				string category;
+				double price;
+				unsigned int quantity;
+				cin >> name >> brand >> category >> price >> quantity;
+				Product product(0, name, brand, category, price, quantity);
+				/*Product product;
+				cin.putback(0);
+				cin >> product;*/
+				dealer->addItem(product);
+			}
+			else if (command == "refill") {
+				unsigned int id;
+				unsigned int quantity;
+				cin >> id >> quantity;
+				dealer->refill(id, quantity);
+			}
+			else if (command == "remove") {
+				unsigned int id;
+				cin >> id;
+				dealer->removeItem(id); // TODO: edit
+			}
 			system("cls");
-		} while (action != '5');
+		} while (command != "exit");
 
 		delete dealer;
 	}

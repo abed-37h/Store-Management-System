@@ -27,6 +27,7 @@ namespace filenames {
 		if (instanceof<Employee>(_object)) return employees;
 		if (instanceof<Dealer>(_object)) return dealers;
 		if (instanceof<Product>(_object)) return products;
+		return ""; // Nothing of the above;
 	}
 }
 
@@ -44,7 +45,7 @@ template <class T>
 void update(const T&);
 
 template <class T>
-void delete1(const T&);
+void delete1(const unsigned int&);
 
 // User namespace
 namespace userio {
@@ -58,6 +59,7 @@ namespace userio {
 
 // Product namespace
 namespace productio {
+	bool exist(const unsigned int&);
 	bool exist(const string&);
 	vector<Product> select(const string&);
 }
@@ -125,6 +127,7 @@ void update(const T& _object) {
 	while (!fin.eof()) {
 		T _record;
 		fin >> _record;
+		if (_record.id() == 0) continue;
 		if (_record.id() == _object.id()) _record = _object;
 		nout << _record << endl;
 	}
@@ -135,9 +138,10 @@ void update(const T& _object) {
 }
 
 template <class T>
-void delete1(const T& _object) {
+void delete1(const unsigned int& _id) {
 	ifstream fin;
 	ofstream nout;
+	T _object;
 	fin.open(filenames::chooseFilename(_object), std::ios::binary);
 	if (fin.fail()) {
 		fin.close();
@@ -147,7 +151,8 @@ void delete1(const T& _object) {
 	while (!fin.eof()) {
 		T _record;
 		fin >> _record;
-		if (_record.id() == _object.id()) nout << _record << endl;
+		if (_record.id() == 0) continue;
+		if (_record.id() != _id) nout << _record << endl;
 	}
 	fin.close();
 	nout.close();
@@ -168,6 +173,7 @@ bool userio::exist(const string& _username, const string& _email) {
 	}
 	while (!fin.eof()) {
 		T _record;
+		fin >> _record;
 		if (_username == _record.username() || _email == _record.email()) return true;
 	}
 	return false;

@@ -5,6 +5,7 @@
 #include "customer.h"
 #include <iostream>
 #include <string>
+#include <cctype>
 #include <conio.h>
 #include <type_traits>
 
@@ -19,6 +20,8 @@ template <typename T>
 T input(const string& = "");
 
 string getPassword(const string& = "");
+bool startsWith(const string&, const string&);
+string strip(const string&);
 
 // Definitions
 template<typename Base, typename T>

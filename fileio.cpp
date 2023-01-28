@@ -31,6 +31,21 @@
 //	return false;
 //}
 
+bool productio::exist(const unsigned int& _id) {
+	ifstream fin;
+	fin.open(filenames::products, std::ios::binary);
+	if (fin.fail()) {
+		fin.close();
+		return false;
+	}
+	while (!fin.eof()) {
+		Product _record;
+		fin >> _record;
+		if (_id == _record.id()) return true;
+	}
+	return false;
+}
+
 // product
 bool productio::exist(const string& _name) {
 	ifstream fin;

@@ -44,7 +44,7 @@ const bool Employee::modifyAccount(void) {
 
 const bool Employee::deleteAccount(void) {
 	if (!userio::exist<Employee>(this->username(), this->email())) return false;
-	delete1(*this);
+	delete1<Employee>(this->id());
 	return true;
 }
 
@@ -64,8 +64,9 @@ const bool Employee::logout(void) {
 	return true;
 }
 
-const bool Employee::refill(Product _product, const unsigned int _quantity) {
-	if (!productio::exist(_product.name())) return false;
+const bool Employee::refill(const unsigned int _id, const unsigned int _quantity) {
+	if (!productio::exist(_id)) return false;
+	Product _product = select<Product>(_id);
 	_product += _quantity;
 	update(_product);
 	return true;

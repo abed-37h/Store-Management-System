@@ -67,6 +67,7 @@ const unsigned int Product::quantity(void)const {
 }
 
 void Product::display(void)const {
+	if (this->_id == 0) return;
 	cout << "Name: " << this->_name << endl;
 	cout << "Brand: " << this->_brand << endl;
 	cout << "Category: " << this->_category << endl;
@@ -75,12 +76,12 @@ void Product::display(void)const {
 }
 
 istream& operator>>(istream& in, Product& _product) {
-	in >> _product._id >> _product._name >> _product._brand >> _product._price >> _product._category >> _product._quantity;
+	in >> _product._id >> _product._name >> _product._brand >> _product._category >> _product._price >> _product._quantity;
 	return in;
 }
 
 ostream& operator<<(ostream& out, const Product& _product) {
-	out << _product._id << '\t' << _product._name << '\t' << _product._brand << "\t" << _product._price << "\t" << _product._category << "\t" << _product._quantity;
+	out << _product._id << '\t' << _product._name << '\t' << _product._brand << "\t" << _product._category << "\t" << _product._price << "\t" << _product._quantity;
 	return out;
 }
 

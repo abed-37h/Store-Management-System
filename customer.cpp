@@ -44,7 +44,7 @@ const bool Customer::modifyAccount(void) {
 
 const bool Customer::deleteAccount(void) {
 	if (!userio::exist<Customer>(this->username(), this->email())) return false;
-	delete1(*this);
+	delete1<Customer>(this->id());
 	return true;
 }
 

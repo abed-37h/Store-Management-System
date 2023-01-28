@@ -17,7 +17,7 @@ public:
     const bool deleteAccount(void);
     const bool login(void);
     const bool logout(void);
-    const bool refill(Product, const unsigned int);
+    const bool refill(const unsigned int, const unsigned int);
     bool operator==(const Employee&);
     friend istream& operator>>(istream&, Employee&);
     friend ostream& operator<<(ostream&, const Employee&);

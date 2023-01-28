@@ -37,3 +37,17 @@ string getPassword(const string& _s) {
 		cout << '*';
 	}
 }
+
+bool startsWith(const string& _string, const string& _substring) {
+	return _string.rfind(_substring, 0) == 0;
+}
+
+string strip(const string& _string) {
+	auto start_it = _string.begin();
+	auto end_it = _string.rbegin();
+	while (std::isspace(*start_it))
+		++start_it;
+	while (std::isspace(*end_it))
+		++end_it;
+	return std::string(start_it, end_it.base());
+}
