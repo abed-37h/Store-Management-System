@@ -85,6 +85,10 @@ ostream& operator<<(ostream& out, const Product& _product) {
 	return out;
 }
 
+bool Product::operator==(const Product& _product) {
+	return (this->_id == _product._id && this->_name == _product._name && this->_brand == _product._brand && this->_category == _product._category && this->_price == _product._price && this->_quantity == _product._quantity);
+}
+
 Product Product::operator++(void) {
 	this->_quantity++;
 	return *this;

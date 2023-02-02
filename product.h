@@ -39,6 +39,7 @@ public:
 	void display(void)const;
 	friend istream& operator>>(istream&, Product&);
 	friend ostream& operator<<(ostream&, const Product&);
+	bool operator==(const Product&);
 	Product operator++(void);
 	Product operator++(int);
 	Product operator--(void);

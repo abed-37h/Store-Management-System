@@ -87,7 +87,7 @@ void Customer::viewCart(void)const {
 bool Customer::purchase(void) {
 	if (this->_cart.totalPrice() > _balance) return false;
 	_balance -= _cart.purchase();
-	//update(*this); // Causes wierd problem
+	update(*this);
 	return true;
 }
 

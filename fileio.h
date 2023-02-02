@@ -2,6 +2,7 @@
 #include "utilities.h"
 #include <fstream>
 #include <vector>
+#include <cstring>
 
 using std::ifstream;
 using std::ofstream;
@@ -11,18 +12,18 @@ using std::endl;
 
 namespace filenames {
 	// directories
-	const char usersdir[] = "users/";
-	const char productsdir[] = "products/";
+	const string usersdir = "users/";
+	const string productsdir = "products/";
 	// filenames
-	const char users[] = "users.txt";
-	const char customers[] = "customers.txt";
-	const char employees[] = "employees.txt";
-	const char dealers[] = "dealers.txt";
-	const char products[] = "products.txt";
-	const char temp[] = "temp.txt";
+	const string users = "users.txt";
+	const string customers = "customers.txt";
+	const string employees = "employees.txt";
+	const string dealers = "dealers.txt";
+	const string products = "products.txt";
+	const string temp = "temp.txt";
 
 	template <class T>
-	inline const char* chooseFilename(T& _object) {
+	string chooseFilename(T& _object) {
 		if (instanceof<Customer>(_object)) return customers;
 		if (instanceof<Employee>(_object)) return employees;
 		if (instanceof<Dealer>(_object)) return dealers;
@@ -69,7 +70,8 @@ namespace productio {
 template <class T>
 void insert(const T& _object) {
 	ofstream fout;
-	fout.open(filenames::chooseFilename(_object), std::ios::binary | std::ios::app);
+	const string _filename = filenames::chooseFilename(_object);
+	fout.open(_filename, std::ios::binary | std::ios::app);
 	// TODO: give an id
 	fout << _object << endl;
 	fout.close();
@@ -79,7 +81,8 @@ template <class T>
 T select(const unsigned int& _id) {
 	T _object;
 	ifstream fin;
-	fin.open(filenames::chooseFilename(_object), std::ios::binary);
+	const string _filename = filenames::chooseFilename(_object);
+	fin.open(_filename, std::ios::binary);
 	if (fin.fail()) {
 		fin.close();
 		return T();
@@ -100,7 +103,8 @@ template <class T>
 vector<T> selectSet(void) {
 	T _object;
 	ifstream fin;
-	fin.open(filenames::chooseFilename(_object), std::ios::binary);
+	const string _filename = filenames::chooseFilename(_object);
+	fin.open(_filename, std::ios::binary);
 	vector<T> _records;
 	if (fin.fail()) {
 		fin.close();
@@ -119,7 +123,8 @@ template <class T>
 void update(const T& _object) {
 	ifstream fin;
 	ofstream nout;
-	fin.open(filenames::chooseFilename(_object), std::ios::binary);
+	const string _filename = filenames::chooseFilename(_object);
+	fin.open(_filename, std::ios::binary);
 	if (fin.fail()) {
 		fin.close();
 		return;
@@ -128,14 +133,24 @@ void update(const T& _object) {
 	while (!fin.eof()) {
 		T _record;
 		fin >> _record;
-		if (_record.id() == 0) continue;
+		if (_record == T()) continue;
 		if (_record.id() == _object.id()) _record = _object;
 		nout << _record << endl;
 	}
 	fin.close();
 	nout.close();
-	remove(filenames::chooseFilename(_object));
-	rename(filenames::temp, filenames::chooseFilename(_object));
+	
+	char* filename = new char[_filename.length() + 1];
+	char* temp = new char[filenames::temp.length() + 1];
+	strcpy_s(filename, _filename.length() + 1, _filename.c_str());
+	strcpy_s(temp, filenames::temp.length() + 1, filenames::temp.c_str());
+
+	remove(filename);
+	rename(temp, filename);
+
+	delete[] filename;
+	delete[] temp;
+	filename = temp = nullptr;
 }
 
 template <class T>
@@ -143,7 +158,8 @@ void delete1(const unsigned int& _id) {
 	ifstream fin;
 	ofstream nout;
 	T _object;
-	fin.open(filenames::chooseFilename(_object), std::ios::binary);
+	const string _filename = filenames::chooseFilename(_object);
+	fin.open(_filename, std::ios::binary);
 	if (fin.fail()) {
 		fin.close();
 		return;
@@ -152,13 +168,23 @@ void delete1(const unsigned int& _id) {
 	while (!fin.eof()) {
 		T _record;
 		fin >> _record;
-		if (_record.id() == 0) continue;
+		if (_record == T()) continue;
 		if (_record.id() != _id) nout << _record << endl;
 	}
 	fin.close();
 	nout.close();
-	remove(filenames::chooseFilename(_object));
-	rename(filenames::temp, filenames::chooseFilename(_object));
+
+	char* filename = new char[_filename.length()];
+	char* temp = new char[filenames::temp.length()];
+	strcpy_s(filename, _filename.length(), _filename.c_str());
+	strcpy_s(temp, filenames::temp.length(), filenames::temp.c_str());
+
+	remove(filename);
+	rename(temp, filename);
+
+	delete[] filename;
+	delete[] temp;
+	filename = temp = nullptr;
 }
 
 // user
@@ -167,7 +193,8 @@ bool userio::exist(const string& _username, const string& _email) {
 	static_assert(std::is_base_of<User, T>::value, "T must inherit from User"); // Check if T inherits User class
 	T _user;
 	ifstream fin;
-	fin.open(filenames::chooseFilename(_user), std::ios::binary);
+	const string _filename = filenames::chooseFilename(_user);
+	fin.open(_filename, std::ios::binary);
 	if (fin.fail()) {
 		fin.close();
 		return false;
@@ -185,7 +212,8 @@ bool userio::authenticate(const string& _username, const string& _password) {
 	static_assert(std::is_base_of<User, T>::value, "T must inherit from User");
 	T _user;
 	ifstream fin;
-	fin.open(filenames::chooseFilename(_user), std::ios::binary);
+	const string _filename = filenames::chooseFilename(_user);
+	fin.open(_filename, std::ios::binary);
 	if (fin.fail()) {
 		fin.close();
 		return false;
@@ -205,7 +233,8 @@ T userio::select(const string& _username) {
 	static_assert(std::is_base_of<User, T>::value, "T must inherit from User");
 	T _user;
 	ifstream fin;
-	fin.open(filenames::chooseFilename(_user), std::ios::binary);
+	const string _filename = filenames::chooseFilename(_user);
+	fin.open(_filename, std::ios::binary);
 	if (fin.fail()) {
 		fin.close();
 		return T();
