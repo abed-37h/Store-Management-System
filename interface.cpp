@@ -4,13 +4,13 @@
 
 using std::istringstream;
 using std::getline;
-using std::count;
+//using std::count;
 
 int main() {
+	prompt:
 	const string welcome = "***************** WELCOME TO OUR STORE *****************";
 	cout << welcome << endl << endl;
 
-	prompt:
 	cout << "Do you have an account? [y/n] ";
 	char answer = _getch();
 	system("cls");
@@ -111,6 +111,7 @@ int main() {
 	string action;
 	if (userType == userTypes::customer) {
 		Customer* customer = static_cast<Customer*>(user);
+		string category = "All";
 		string command;
 		do {
 			cout << "Choose an action to do:" << endl
@@ -123,7 +124,97 @@ int main() {
 				<< "\t7.Exit < exit >" << endl;
 			cin >> command;
 			if (command == "show-profile") {
-				// TODO: implement
+				system("cls");
+				do {
+					customer->showProfileInfo();
+					cout << endl;
+					cout << "Choose an action to do:" << endl
+						<< "\t1. Edit profile info < edit >" << endl
+						<< "\t2. Logout < logout >" << endl
+						<< "\t3. Delete account < delete >" << endl
+						<< "\t4. Go back < back >" << endl;
+					cin >> command;
+					if (command == "edit") {
+						cout << "\tFirstname: ";
+						if (cin.peek() != inputChar::ENTER) {
+							string firstname = input<string>();
+							customer->firstname(firstname);
+						}
+
+						cout << "\tLastname: ";
+						if (cin.peek() != inputChar::ENTER) {
+							string lastname = input<string>();
+							customer->lastname(lastname);
+						}
+
+						cout << "\tUsername: ";
+						if (cin.peek() != inputChar::ENTER) {
+							string username = input<string>();
+							customer->username(username);
+						}
+
+						cout << "\tEmail: ";
+						if (cin.peek() != inputChar::ENTER) {
+							string email = input<string>();
+							customer->email(email);
+						}
+
+						cout << "\tPassword: ";
+						if (cin.peek() != inputChar::ENTER) {
+							string password = getPassword();
+							customer->password(password);
+						}
+
+						cout << "\tBirthDay (yyyy-mm-dd): ";
+						if (cin.peek() != inputChar::ENTER) {
+							Date birthday = input<Date>();
+							customer->birthday(birthday);
+						}
+
+						cout << "\tYour Balance: ";
+						if (cin.peek() != inputChar::ENTER) {
+							double balance = input<double>();
+							customer->balance(balance);
+						}
+
+						customer->modifyAccount();
+					}
+					else if (command == "logout") {
+						success = customer->logout();
+						if (success) {
+							cout << "Logging out..." << endl;
+							Sleep(5);
+							system("cls");
+							goto prompt;
+						}
+						else cout << "Something went wrong! Try again later." << endl;
+					}
+					else if (command == "delete") {
+						confirmDeletionCustomer:
+						cout << "Are you sure you want to delete your account? [y/n]" << endl
+							<< "Your information will be lost and can't be restored again." << endl;
+						char confirm = _getch();
+						switch (confirm) {
+						case 'y':
+							success = customer->deleteAccount();
+							if (success) {
+								cout << "We are sad to see leave :(" << endl;
+								Sleep(5);
+								system("cls");
+								goto prompt;
+							}
+							else cout << "Something went wrong! Try again later." << endl;
+							break;
+						case 'n':
+							cout << "Bravo! You made a good decision." << endl
+								<< "\tPress any key to continue..." << endl;
+							_getch();
+							break;
+						default: goto confirmDeletionCustomer;
+						}
+					}
+					system("cls");
+				} while (command != "back");
 			}
 			else if (command == "add") {
 				Product product;
@@ -157,13 +248,16 @@ int main() {
 				customer->purchase();
 			}
 			system("cls");
+			customer->viewStocks(category);
 		} while (command != "exit");
 
 		delete customer;
+		customer = nullptr;
 	}
 
 	else if (userType == userTypes::employee) {
 		Employee* employee = static_cast<Employee*>(user);
+		string category = "All";
 		string command;
 		do {
 			cout << "Choose an action to do:" << endl
@@ -172,7 +266,91 @@ int main() {
 				<< "\t3.Exit < exit >" << endl;
 			cin >> command;
 			if (command == "show-profile") {
-				// TODO: implement
+				system("cls");
+				do {
+					employee->showProfileInfo();
+					cout << endl;
+					cout << "Choose an action to do:" << endl
+						<< "\t1. Edit profile info < edit >" << endl
+						<< "\t2. Logout < logout >" << endl
+						<< "\t3. Delete account < delete >" << endl
+						<< "\t4. Go back < back >" << endl;
+					cin >> command;
+					if (command == "edit") {
+						cout << "\tFirstname: ";
+						if (cin.peek() != inputChar::ENTER) {
+							string firstname = input<string>();
+							employee->firstname(firstname);
+						}
+
+						cout << "\tLastname: ";
+						if (cin.peek() != inputChar::ENTER) {
+							string lastname = input<string>();
+							employee->lastname(lastname);
+						}
+
+						cout << "\tUsername: ";
+						if (cin.peek() != inputChar::ENTER) {
+							string username = input<string>();
+							employee->username(username);
+						}
+
+						cout << "\tEmail: ";
+						if (cin.peek() != inputChar::ENTER) {
+							string email = input<string>();
+							employee->email(email);
+						}
+
+						cout << "\tPassword: ";
+						if (cin.peek() != inputChar::ENTER) {
+							string password = getPassword();
+							employee->password(password);
+						}
+
+						cout << "\tBirthDay (yyyy-mm-dd): ";
+						if (cin.peek() != inputChar::ENTER) {
+							Date birthday = input<Date>();
+							employee->birthday(birthday);
+						}
+
+						employee->modifyAccount();
+					}
+					else if (command == "logout") {
+						success = employee->logout();
+						if (success) {
+							cout << "Logging out..." << endl;
+							Sleep(5);
+							system("cls");
+							goto prompt;
+						}
+						else cout << "Something went wrong! Try again later." << endl;
+					}
+					else if (command == "delete") {
+					confirmDeletionEmployee:
+						cout << "Are you sure you want to delete your account? [y/n]" << endl
+							<< "Your information will be lost and can't be restored again." << endl;
+						char confirm = _getch();
+						switch (confirm) {
+						case 'y':
+							success = employee->deleteAccount();
+							if (success) {
+								cout << "We are sad to see leave :(" << endl;
+								Sleep(5);
+								system("cls");
+								goto prompt;
+							}
+							else cout << "Something went wrong! Try again later." << endl;
+							break;
+						case 'n':
+							cout << "Bravo! You made a good decision." << endl
+								<< "\tPress any key to continue..." << endl;
+							_getch();
+							break;
+						default: goto confirmDeletionEmployee;
+						}
+					}
+					system("cls");
+				} while (command != "back");
 			}
 			else if (command == "refill") {
 				unsigned int id;
@@ -181,9 +359,11 @@ int main() {
 				employee->refill(id, quantity);
 			}
 			system("cls");
+			employee->viewStocks(category);
 		} while (command != "exit");
 
 		delete employee;
+		employee = nullptr;
 	}
 
 	else if (userType == userTypes::dealer) {
@@ -200,10 +380,94 @@ int main() {
 			/*getline(cin, action);
 			action = strip(action);
 			istringstream sin(action);*/
-			
+			string category = "All";
 			cin >> command;
 			if (command == "show-profile") {
-				// TODO: implement
+				system("cls");
+				do {
+					dealer->showProfileInfo();
+					cout << endl;
+					cout << "Choose an action to do:" << endl
+						<< "\t1. Edit profile info < edit >" << endl
+						<< "\t2. Logout < logout >" << endl
+						<< "\t3. Delete account < delete >" << endl
+						<< "\t4. Go back < back >" << endl;
+					cin >> command;
+					if (command == "edit") {
+						cout << "\tFirstname: ";
+						if (cin.peek() != inputChar::ENTER) {
+							string firstname = input<string>();
+							dealer->firstname(firstname);
+						}
+
+						cout << "\tLastname: ";
+						if (cin.peek() != inputChar::ENTER) {
+							string lastname = input<string>();
+							dealer->lastname(lastname);
+						}
+
+						cout << "\tUsername: ";
+						if (cin.peek() != inputChar::ENTER) {
+							string username = input<string>();
+							dealer->username(username);
+						}
+
+						cout << "\tEmail: ";
+						if (cin.peek() != inputChar::ENTER) {
+							string email = input<string>();
+							dealer->email(email);
+						}
+
+						cout << "\tPassword: ";
+						if (cin.peek() != inputChar::ENTER) {
+							string password = getPassword();
+							dealer->password(password);
+						}
+
+						cout << "\tBirthDay (yyyy-mm-dd): ";
+						if (cin.peek() != inputChar::ENTER) {
+							Date birthday = input<Date>();
+							dealer->birthday(birthday);
+						}
+
+						dealer->modifyAccount();
+					}
+					else if (command == "logout") {
+						success = dealer->logout();
+						if (success) {
+							cout << "Logging out..." << endl;
+							Sleep(5);
+							system("cls");
+							goto prompt;
+						}
+						else cout << "Something went wrong! Try again later." << endl;
+					}
+					else if (command == "delete") {
+					confirmDeletionDealer:
+						cout << "Are you sure you want to delete your account? [y/n]" << endl
+							<< "Your information will be lost and can't be restored again." << endl;
+						char confirm = _getch();
+						switch (confirm) {
+						case 'y':
+							success = dealer->deleteAccount();
+							if (success) {
+								cout << "We are sad to see leave :(" << endl;
+								Sleep(5);
+								system("cls");
+								goto prompt;
+							}
+							else cout << "Something went wrong! Try again later." << endl;
+							break;
+						case 'n':
+							cout << "Bravo! You made a good decision." << endl
+								<< "\tPress any key to continue..." << endl;
+							_getch();
+							break;
+						default: goto confirmDeletionDealer;
+						}
+					}
+					system("cls");
+				} while (command != "back");
 			}
 			else if (command == "add") {
 				//int spaces = count(action.begin(), action.end(), ' ');
@@ -228,15 +492,18 @@ int main() {
 			else if (command == "remove") {
 				unsigned int id;
 				cin >> id;
-				dealer->removeItem(id); // TODO: edit
+				dealer->removeItem(id);
 			}
 			system("cls");
+			dealer->viewStocks(category);
 		} while (command != "exit");
 
 		delete dealer;
+		dealer = nullptr;
 	}
 
 	delete user;
+	user = nullptr;
 
 	return 0;
 }

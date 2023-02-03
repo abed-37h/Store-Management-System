@@ -64,6 +64,11 @@ const bool Employee::logout(void) {
 	return true;
 }
 
+void Employee::showProfileInfo(void) const {
+	User::showProfileInfo();
+	cout << "Your Wage: " << '$' << this->_wage << endl;
+}
+
 const bool Employee::refill(const unsigned int _id, const unsigned int _quantity) {
 	if (!productio::exist(_id)) return false;
 	Product _product = select<Product>(_id);

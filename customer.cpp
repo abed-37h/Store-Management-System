@@ -64,6 +64,11 @@ const bool Customer::logout(void) {
 	return true;
 }
 
+void Customer::showProfileInfo(void) const {
+	User::showProfileInfo();
+	cout << "Your Balance: " << '$' << this->_balance << endl;
+}
+
 const bool Customer::addProductToCart(const string _name, const unsigned int _quantity) {
 	const Product _product = productio::select(_name);
 	return this->_cart.addProduct(_product, _quantity);
@@ -85,8 +90,8 @@ void Customer::viewCart(void)const {
 }
 
 bool Customer::purchase(void) {
-	if (this->_cart.totalPrice() > _balance) return false;
-	_balance -= _cart.purchase();
+	if (this->_cart.totalPrice() > this->_balance) return false;
+	this->_balance -= this->_cart.purchase();
 	update(*this);
 	return true;
 }

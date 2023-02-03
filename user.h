@@ -59,6 +59,7 @@ public:
 	virtual const bool deleteAccount(void) = 0;
 	virtual const bool login(void) = 0;
 	virtual const bool logout(void) = 0;
+	virtual void showProfileInfo(void)const;
 	void viewStocks(const string = "All")const;
 	// Operators
 	bool operator==(const User&);

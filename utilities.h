@@ -13,6 +13,12 @@ using std::cout;
 using std::cin;
 using std::string;
 
+enum inputChar {
+	BACKSPACE = 8,
+	ENTER = 13
+};
+
+
 template<typename Base, typename T>
 inline bool instanceof(const T&);
 

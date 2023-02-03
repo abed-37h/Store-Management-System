@@ -2,11 +2,6 @@
 
 
 string getPassword(const string& _s) {
-	enum inputChar {
-		BACKSPACE = 8,
-		ENTER = 13
-	};
-
 	cout << _s;
 	string password = "";
 	char ch = ' ';

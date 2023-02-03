@@ -19,6 +19,7 @@ public:
     const bool deleteAccount(void);
     const bool login(void);
     const bool logout(void);
+    void showProfileInfo(void)const;
     const bool addProductToCart(const string, const unsigned int = 1);
     const bool modifyProductQunatityInCart(const string, const unsigned int);
     const bool removeProductFromCart(const string);

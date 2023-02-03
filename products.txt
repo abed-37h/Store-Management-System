@@ -1,3 +1,1 @@
-1	MacBook_Pro	Apple	Laptops	1000	45
-1	MacBook_Pro	Apple	Laptops	1000	45
-1	MacBook_Pro	Apple	Laptops	1000	45
+1	MacBook_Pro	Apple	Laptops	1000	37

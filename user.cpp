@@ -117,6 +117,14 @@ const unsigned int User::age(void)const {
 	return (diff.month() < 6) ? diff.year() : diff.year() + 1;
 }
 
+void User::showProfileInfo(void) const {
+	cout << "Firstname: " << this->_firstname << endl
+		<< "Lastname: " << this->_lastname << endl
+		<< "Username: " << this->_username << endl
+		<< "Email: " << this->_email << endl
+		<< "Birthday: " << this->_birthday << endl;
+}
+
 //
 //const bool User::createAccount(void) {
 //	if (userio::exist(this->_username, this->_email, filenames::users)) return false;

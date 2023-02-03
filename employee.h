@@ -11,12 +11,13 @@ public:
     Employee(const string, const string);
     ~Employee();
     void wage(const double);
-    const double wage(void)const;
+    const double wage(void) const;
     const bool createAccount(void);
     const bool modifyAccount(void);
     const bool deleteAccount(void);
     const bool login(void);
     const bool logout(void);
+    void showProfileInfo(void) const;
     const bool refill(const unsigned int, const unsigned int);
     bool operator==(const Employee&);
     friend istream& operator>>(istream&, Employee&);
