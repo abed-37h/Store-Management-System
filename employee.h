@@ -5,6 +5,9 @@ class Employee :
 {
 private:
     double _wage;
+protected:
+    istream& input(istream&) override;
+    ostream& output(ostream&) const override;
 public:
     Employee(const unsigned int = 0, const string = "", const string = "", const string = "", const string = "", const string = "", const Date = Date(), const double = 0.0);
     Employee(const string, const string, const string, const string, const string, const Date = Date());
@@ -20,7 +23,7 @@ public:
     void showProfileInfo(void) const;
     const bool refill(const unsigned int, const unsigned int);
     bool operator==(const Employee&);
-    friend istream& operator>>(istream&, Employee&);
-    friend ostream& operator<<(ostream&, const Employee&);
+    /*friend istream& operator>>(istream&, Employee&);
+    friend ostream& operator<<(ostream&, const Employee&);*/
 };
 

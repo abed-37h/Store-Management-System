@@ -174,10 +174,10 @@ void delete1(const unsigned int& _id) {
 	fin.close();
 	fout.close();
 
-	char* filename = new char[_filename.length()];
-	char* temp = new char[filenames::temp.length()];
-	strcpy_s(filename, _filename.length(), _filename.c_str());
-	strcpy_s(temp, filenames::temp.length(), filenames::temp.c_str());
+	char* filename = new char[_filename.length() + 1];
+	char* temp = new char[filenames::temp.length() + 1];
+	strcpy_s(filename, _filename.length() + 1, _filename.c_str());
+	strcpy_s(temp, filenames::temp.length() + 1, filenames::temp.c_str());
 
 	remove(filename);
 	rename(temp, filename);
@@ -202,8 +202,12 @@ bool userio::exist(const string& _username, const string& _email) {
 	while (!fin.eof()) {
 		T _record;
 		fin >> _record;
-		if (_username == _record.username() || _email == _record.email()) return true;
+		if (_username == _record.username() || _email == _record.email()) {
+			fin.close();
+			return true;
+		}
 	}
+	fin.close();
 	return false;
 }
 
@@ -221,9 +225,16 @@ bool userio::authenticate(const string& _username, const string& _password) {
 	while (!fin.eof()) {
 		T _record;
 		fin >> _record;
-		if (_username == _record.username() && _password == _record.password()) return true;
-		if (_username == _record.username() && _password != _record.password()) return false;
+		if (_username == _record.username() && _password == _record.password()) {
+			fin.close();
+			return true;
+		}
+		if (_username == _record.username() && _password != _record.password()) {
+			fin.close();
+			return false;
+		}
 	}
+	fin.close();
 	return false;
 }
 

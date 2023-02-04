@@ -13,10 +13,6 @@ using std::endl;
 
 class User
 {
-protected:
-	/*static unsigned int _lastUserId;
-	static unsigned int _numberOfUsers;*/
-	bool _loggedIn;
 private:
 	//string _role;
 	unsigned int _id;
@@ -27,6 +23,12 @@ private:
 	string _password;
 	Date _birthday;
 	//unsigned int _age;
+protected:
+	/*static unsigned int _lastUserId;
+	static unsigned int _numberOfUsers;*/
+	bool _loggedIn;
+	virtual istream& input(istream&);
+	virtual ostream& output(ostream&) const;
 public:
 	User(const unsigned int = 0, const string = "", const string = "", const string = "", const string = "", const string = "", const Date = Date());
 	User(const string, const string, const string, const string, const string, const Date = Date());

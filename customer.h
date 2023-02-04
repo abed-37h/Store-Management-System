@@ -7,6 +7,9 @@ class Customer :
 private:
     double _balance;
     Cart _cart;
+protected:
+    istream& input(istream&) override;
+    ostream& output(ostream&) const override;
 public:
     Customer(const unsigned int = 0, const string = "", const string = "", const string = "", const string = "", const string = "", const Date = Date(), const double = 0.0);
     Customer(const string, const string, const string, const string, const string, const Date = Date(), const double = 0.0);
@@ -26,7 +29,7 @@ public:
     void viewCart(void)const;
     bool purchase(void);
     bool operator==(const Customer&);
-    friend istream& operator>>(istream&, Customer&);
-    friend ostream& operator<<(ostream&, const Customer&);
+    /*friend istream& operator>>(istream&, Customer&);
+    friend ostream& operator<<(ostream&, const Customer&);*/
 };
 

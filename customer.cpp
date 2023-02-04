@@ -1,7 +1,15 @@
 #include "customer.h"
 #include "fileio.h"
 
-Customer::Customer(const unsigned int _id, const string _firstname, const string _lastname, const string _username, const string _email, const string _password, const Date _birthday, const double _balance) 
+istream& Customer::input(istream& in) {
+	return User::input(in) >> this->_balance;
+}
+
+ostream& Customer::output(ostream& out) const {
+	return User::output(out) << '\t' << this->_balance;
+}
+
+Customer::Customer(const unsigned int _id, const string _firstname, const string _lastname, const string _username, const string _email, const string _password, const Date _birthday, const double _balance)
 	: User(_id, _firstname, _lastname, _username, _email, _password, _birthday) {
 	this->_balance = (_balance >= 0.0) ? _balance : 0.0;
 }
@@ -100,24 +108,10 @@ bool Customer::operator==(const Customer& _customer) {
 	return (User::operator==(_customer) && this->_balance == _customer._balance);
 }
 
-istream& operator>>(istream& in, Customer& _customer) {
-	unsigned int _id;
-	string _firstname, _lastname, _username, _email, _password;
-	Date _birthday;
-	in >> _id >> _firstname >> _lastname >> _username >> _email >> _password >> _birthday >> _customer._balance;
-	_customer.id(_id);
-	_customer.firstname(_firstname);
-	_customer.lastname(_lastname);
-	_customer.username(_username);
-	_customer.email(_email);
-	_customer.password(_password);
-	_customer.birthday(_birthday);
-	return in;
-}
-
-ostream& operator<<(ostream& out, const Customer& _customer) {
-	const User* _user = &_customer;
-	out << *_user << '\t' << _customer._balance;
-	delete _user;
-	return out;
-}
+//istream& operator>>(istream& in, Customer& _customer) {
+//	return _customer.input(in);
+//}
+//
+//ostream& operator<<(ostream& out, const Customer& _customer) {
+//	return _customer.output(out);
+//}

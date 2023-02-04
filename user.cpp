@@ -4,6 +4,14 @@
 //unsigned int User::_lastUserId = 0;
 //unsigned User::_numberOfUsers = 0;
 
+istream& User::input(istream& in) {
+	return in >> this->_id >> this->_firstname >> this->_lastname >> this->_username >> this->_email >> this->_password >> this->_birthday;
+}
+
+ostream& User::output(ostream& out) const {
+	return out << this->_id << '\t' << this->_firstname << '\t' << this->_lastname << '\t' << this->_username << '\t' << this->_email << '\t' << this->_password << '\t' << this->_birthday;
+}
+
 User::User(const unsigned int _id, const string _firstname, const string _lastname, const string _username, const string _email, const string _password, const Date _birthday) {
 	//this->_id = this->_lastUserId++;
 	this->_id = _id;
@@ -126,36 +134,36 @@ void User::showProfileInfo(void) const {
 }
 
 //
-//const bool User::createAccount(void) {
-//	if (userio::exist(this->_username, this->_email, filenames::users)) return false;
-//	insert(*this, filenames::users);
-//	return true;
-//}
-//const bool User::modifyAccount(void) {
-//	User _userRecord = select<User>(this->_id, filenames::users);
-//	if (_userRecord == User()) return false;
-//	update(*this, filenames::users);
-//	return true;
-//}
-//const bool User::deleteAccount(void) {
-//	if (!userio::exist(this->_username, this->_email, filenames::users)) return false;
-//	delete1(*this, filenames::users);
-//	return true;
-//}
-//const bool User::login(void) {
-//	if (userio::authenticate(this->_username, this->_password, filenames::users)) {
-//		*this = userio::select(this->_username, filenames::users);
-//		this->_loggedIn = true;
-//		return true;
-//	}
-//	this->_loggedIn = false;
-//	return false;
-//}
-//const bool User::logout(void) {
-//	if (!this->_loggedIn) return false;
-//	this->_loggedIn = false;
-//	return true;
-//}
+/*const bool User::createAccount(void) {
+	if (userio::exist(this->_username, this->_email, filenames::users)) return false;
+	insert(*this, filenames::users);
+	return true;
+}
+const bool User::modifyAccount(void) {
+	User _userRecord = select<User>(this->_id, filenames::users);
+	if (_userRecord == User()) return false;
+	update(*this, filenames::users);
+	return true;
+}
+const bool User::deleteAccount(void) {
+	if (!userio::exist(this->_username, this->_email, filenames::users)) return false;
+	delete1(*this, filenames::users);
+	return true;
+}
+const bool User::login(void) {
+	if (userio::authenticate(this->_username, this->_password, filenames::users)) {
+		*this = userio::select(this->_username, filenames::users);
+		this->_loggedIn = true;
+		return true;
+	}
+	this->_loggedIn = false;
+	return false;
+}
+const bool User::logout(void) {
+	if (!this->_loggedIn) return false;
+	this->_loggedIn = false;
+	return true;
+}*/
 void User::viewStocks(const string _category)const {
 	vector<Product> _products;
 	if (_category == "All") _products = selectSet<Product>();
@@ -168,12 +176,8 @@ bool User::operator==(const User& _user) {
 		this->_username == _user._username && this->_email == _user._email && this->_password == _user._password && this->_birthday == _user._birthday);
 }
 istream& operator>>(istream& in, User& _user) {
-	in >> _user._id >> _user._firstname >> _user._lastname >> _user._username
-		>> _user._email >> _user._password >> _user._birthday;
-	return in;
+	return _user.input(in);
 }
 ostream& operator<<(ostream& out, const User& _user) {
-	out << _user._id << '\t' << _user._firstname << '\t' << _user._lastname << '\t' << _user._username
-		<< '\t' << _user._email << '\t' << _user._password << '\t' << _user._birthday;
-	return out;
+	return _user.output(out);
 }

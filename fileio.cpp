@@ -42,8 +42,12 @@ bool productio::exist(const unsigned int& _id) {
 	while (!fin.eof()) {
 		Product _record;
 		fin >> _record;
-		if (_id == _record.id()) return true;
+		if (_id == _record.id()) {
+			fin.close();
+			return true;
+		}
 	}
+	fin.close();
 	return false;
 }
 
@@ -57,8 +61,12 @@ bool productio::exist(const string& _name) {
 	while (!fin.eof()) {
 		Product _record;
 		fin >> _record;
-		if (_name == _record.name()) return true;
+		if (_name == _record.name()) {
+			fin.close();
+			return true;
+		}
 	}
+	fin.close();
 	return false;
 }
 

@@ -1,6 +1,14 @@
 #include "employee.h"
 #include "fileio.h"
 
+istream& Employee::input(istream& in) {
+	return User::input(in) >> this->_wage;
+}
+
+ostream& Employee::output(ostream& out) const {
+	return User::output(out) << this->_wage;
+}
+
 Employee::Employee(const unsigned int _id, const string _firstname, const string _lastname, const string _username, const string _email, const string _password, const Date _birthday, const double _wage)
 	: User(_id, _firstname, _lastname, _username, _email, _password, _birthday) {
 	this->_wage = _wage;
@@ -81,7 +89,7 @@ bool Employee::operator==(const Employee& _employee) {
 	return (User::operator==(_employee) && this->_wage == _employee._wage);
 }
 
-istream& operator>>(istream& in, Employee& _employee) {
+/*istream& operator>>(istream& in, Employee& _employee) {
 	unsigned int _id;
 	string _firstname, _lastname, _username, _email, _password;
 	Date _birthday;
@@ -101,4 +109,4 @@ ostream& operator<<(ostream& out, const Employee& _employee) {
 	out << *_user << '\t' << _employee._wage;
 	delete _user;
 	return out;
-}
+}*/

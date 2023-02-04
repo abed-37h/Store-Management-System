@@ -182,6 +182,10 @@ int main() {
 					else if (command == "logout") {
 						success = customer->logout();
 						if (success) {
+							delete customer;
+							delete user;
+							customer = nullptr;
+							user = nullptr;
 							cout << "Logging out..." << endl;
 							Sleep(5);
 							system("cls");
@@ -196,8 +200,12 @@ int main() {
 						char confirm = _getch();
 						switch (confirm) {
 						case 'y':
-							success = customer->deleteAccount();
+							success = customer->logout() && customer->deleteAccount();
 							if (success) {
+								delete customer;
+								delete user;
+								customer = nullptr;
+								user = nullptr;
 								cout << "We are sad to see leave :(" << endl;
 								Sleep(5);
 								system("cls");
@@ -318,6 +326,10 @@ int main() {
 					else if (command == "logout") {
 						success = employee->logout();
 						if (success) {
+							delete employee;
+							delete user;
+							employee = nullptr;
+							user = nullptr;
 							cout << "Logging out..." << endl;
 							Sleep(5);
 							system("cls");
@@ -332,8 +344,12 @@ int main() {
 						char confirm = _getch();
 						switch (confirm) {
 						case 'y':
-							success = employee->deleteAccount();
+							success = employee->logout() && employee->deleteAccount();
 							if (success) {
+								delete employee;
+								delete user;
+								employee = nullptr;
+								user = nullptr;
 								cout << "We are sad to see leave :(" << endl;
 								Sleep(5);
 								system("cls");
@@ -435,6 +451,10 @@ int main() {
 					else if (command == "logout") {
 						success = dealer->logout();
 						if (success) {
+							delete dealer;
+							delete user;
+							dealer = nullptr;
+							user = nullptr;
 							cout << "Logging out..." << endl;
 							Sleep(5);
 							system("cls");
@@ -449,8 +469,12 @@ int main() {
 						char confirm = _getch();
 						switch (confirm) {
 						case 'y':
-							success = dealer->deleteAccount();
+							success = dealer->logout() && dealer->deleteAccount();
 							if (success) {
+								delete dealer;
+								delete user;
+								dealer = nullptr;
+								user = nullptr;
 								cout << "We are sad to see leave :(" << endl;
 								Sleep(5);
 								system("cls");
@@ -478,9 +502,6 @@ int main() {
 				unsigned int quantity;
 				cin >> name >> brand >> category >> price >> quantity;
 				Product product(0, name, brand, category, price, quantity);
-				/*Product product;
-				cin.putback(0);
-				cin >> product;*/
 				dealer->addItem(product);
 			}
 			else if (command == "refill") {
