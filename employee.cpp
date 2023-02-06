@@ -1,6 +1,8 @@
 #include "employee.h"
 #include "fileio.h"
 
+unsigned int Employee::_validId = getValidId<Employee>();
+
 istream& Employee::input(istream& in) {
 	return User::input(in) >> this->_wage;
 }
@@ -39,6 +41,7 @@ const bool Employee::createAccount(void) {
 	if (userio::exist<Customer>(this->username(), this->email())) return false;
 	if (userio::exist<Employee>(this->username(), this->email())) return false;
 	if (userio::exist<Dealer>(this->username(), this->email())) return false;
+	this->id(this->_validId++);
 	insert(*this);
 	return true;
 }

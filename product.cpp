@@ -1,6 +1,8 @@
 #include "product.h"
+#include "fileio.h"
 
-unsigned int Product::_totalQuantity = 0;
+unsigned int Product::_validId = getValidId<Product>();
+//unsigned int Product::_totalQuantity = 0;
 
 Product::Product(const unsigned int _id, const string _name, const string _brand, const string _category, const double _price, const unsigned int _quantity) {
 	this->_id = _id;
@@ -9,11 +11,11 @@ Product::Product(const unsigned int _id, const string _name, const string _brand
 	this->_category = _category;
 	this->_price = _price;
 	this->_quantity = _quantity;
-	this->_totalQuantity++;
+	//this->_totalQuantity++;
 }
 
 Product::~Product(void) {
-	this->_totalQuantity--;
+	//this->_totalQuantity--;
 }
 
 // Setters:
@@ -64,6 +66,10 @@ const double Product::price(void)const {
 
 const unsigned int Product::quantity(void)const {
 	return this->_quantity;
+}
+
+void Product::assignId(void) {
+	this->_id = this->_validId++;
 }
 
 void Product::display(void)const {

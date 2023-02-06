@@ -5,6 +5,7 @@ class Customer :
     public User
 {
 private:
+    static unsigned int _validId;
     double _balance;
     Cart _cart;
 protected:

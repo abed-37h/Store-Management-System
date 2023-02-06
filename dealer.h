@@ -4,6 +4,8 @@
 class Dealer :
     public User
 {
+private:
+    static unsigned int _validId;
 public:
     Dealer(const unsigned int = 0, const string = "", const string = "", const string = "", const string = "", const string = "", const Date = Date());
     Dealer(const string, const string, const string, const string, const string, const Date = Date());
@@ -14,7 +16,7 @@ public:
     const bool deleteAccount(void);
     const bool login(void);
     const bool logout(void);
-    const bool addItem(const Product);
+    const bool addItem(Product);
     const bool removeItem(const unsigned int);
     const bool refill(const unsigned int, const unsigned int);
     /*bool operator==(const Dealer&);

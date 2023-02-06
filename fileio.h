@@ -34,6 +34,9 @@ namespace filenames {
 
 // General
 template <typename T>
+unsigned int getValidId(void);
+
+template <typename T>
 void insert(const T&);
 
 template <typename T>
@@ -67,8 +70,27 @@ namespace productio {
 }
 
 // general
-template <typename T>
-void insert(const T& _object) {
+template<typename T>
+inline unsigned int getValidId(void) {
+	T _object;
+	ifstream fin;
+	const string _filename = filenames::chooseFilename(_object);
+	fin.open(_filename, std::ios::binary);
+	if (fin.fail()) {
+		fin.close();
+		return 1;
+	}
+	unsigned int _id
+	while (!fin.eof()) {
+		_id = fin.peek();
+		string _line;
+		getline(fin, _line);
+	}
+	return _id + 1;
+}
+
+template<typename T>
+inline void insert(const T& _object) {
 	ofstream fout;
 	const string _filename = filenames::chooseFilename(_object);
 	fout.open(_filename, std::ios::binary | std::ios::app);
@@ -77,8 +99,8 @@ void insert(const T& _object) {
 	fout.close();
 }
 
-template <typename T>
-T select(const unsigned int& _id) {
+template<typename T>
+inline T select(const unsigned int& _id) {
 	T _object;
 	ifstream fin;
 	const string _filename = filenames::chooseFilename(_object);
@@ -99,8 +121,8 @@ T select(const unsigned int& _id) {
 	return T();
 }
 
-template <typename T>
-vector<T> selectSet(void) {
+template<typename T>
+inline vector<T> selectSet(void) {
 	T _object;
 	ifstream fin;
 	const string _filename = filenames::chooseFilename(_object);
@@ -119,8 +141,8 @@ vector<T> selectSet(void) {
 	return _records;
 }
 
-template <typename T>
-void update(const T& _object) {
+template<typename T>
+inline void update(const T& _object) {
 	ifstream fin;
 	ofstream fout;
 	const string _filename = filenames::chooseFilename(_object);
@@ -153,8 +175,8 @@ void update(const T& _object) {
 	filename = temp = nullptr;
 }
 
-template <typename T>
-void delete1(const unsigned int& _id) {
+template<typename T>
+inline void delete1(const unsigned int& _id) {
 	ifstream fin;
 	ofstream fout;
 	T _object;
@@ -188,8 +210,8 @@ void delete1(const unsigned int& _id) {
 }
 
 // user
-template <typename T>
-bool userio::exist(const string& _username, const string& _email) {
+template<typename T>
+inline bool userio::exist(const string& _username, const string& _email) {
 	static_assert(std::is_base_of<User, T>::value, "T must inherit from User"); // Check if T inherits User class
 	T _user;
 	ifstream fin;
@@ -211,8 +233,8 @@ bool userio::exist(const string& _username, const string& _email) {
 	return false;
 }
 
-template <typename T>
-bool userio::authenticate(const string& _username, const string& _password) {
+template<typename T>
+inline bool userio::authenticate(const string& _username, const string& _password) {
 	static_assert(std::is_base_of<User, T>::value, "T must inherit from User");
 	T _user;
 	ifstream fin;
@@ -238,9 +260,8 @@ bool userio::authenticate(const string& _username, const string& _password) {
 	return false;
 }
 
-
-template <typename T>
-T userio::select(const string& _username) {
+template<typename T>
+inline T userio::select(const string& _username) {
 	static_assert(std::is_base_of<User, T>::value, "T must inherit from User");
 	T _user;
 	ifstream fin;

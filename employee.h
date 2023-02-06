@@ -4,6 +4,7 @@ class Employee :
     public User
 {
 private:
+    static unsigned int _validId;
     double _wage;
 protected:
     istream& input(istream&) override;

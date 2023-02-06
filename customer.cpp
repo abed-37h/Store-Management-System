@@ -1,6 +1,8 @@
 #include "customer.h"
 #include "fileio.h"
 
+unsigned int Customer::_validId = getValidId<Customer>();
+
 istream& Customer::input(istream& in) {
 	return User::input(in) >> this->_balance;
 }
@@ -39,6 +41,7 @@ const bool Customer::createAccount(void) {
 	if (userio::exist<Customer>(this->username(), this->email())) return false;
 	if (userio::exist<Employee>(this->username(), this->email())) return false;
 	if (userio::exist<Dealer>(this->username(), this->email())) return false;
+	this->id(this->_validId++);
 	insert(*this);
 	return true;
 }

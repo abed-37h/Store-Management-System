@@ -10,8 +10,9 @@ using std::endl;
 
 class Product
 {
-	static unsigned int _totalQuantity;
 private:
+	//static unsigned int _totalQuantity;
+	static unsigned int _validId;
 	unsigned int _id;
 	string _name;
 	string _brand;
@@ -36,6 +37,7 @@ public:
 	const double price(void)const;
 	const unsigned int quantity(void)const;
 	// 
+	void assignId(void);
 	void display(void)const;
 	friend istream& operator>>(istream&, Product&);
 	friend ostream& operator<<(ostream&, const Product&);
