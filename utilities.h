@@ -4,13 +4,18 @@
 #include "employee.h"
 #include "customer.h"
 #include <iostream>
+#include <sstream>
 #include <string>
 #include <cctype>
 #include <conio.h>
+#include <Windows.h>
 #include <type_traits>
 
 using std::cout;
 using std::cin;
+using std::cerr;
+using std::getline;
+using std::istringstream;
 using std::string;
 
 enum inputChar {
@@ -25,9 +30,12 @@ inline bool instanceof(const T&);
 template <typename T>
 T input(const string& = "");
 
+string operator*(unsigned int, string);
+string operator*(string, unsigned int);
 string getPassword(const string& = "");
 bool startsWith(const string&, const string&);
 string strip(const string&);
+void showProfile(User* _user);
 
 // Definitions
 template<typename Base, typename T>

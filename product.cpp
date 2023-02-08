@@ -1,8 +1,8 @@
 #include "product.h"
 #include "fileio.h"
 
-unsigned int Product::_validId = getValidId<Product>();
-//unsigned int Product::_totalQuantity = 0;
+//unsigned int Product::_avilableId = getAvailableId<Product>();
+unsigned int Product::_avilableId = 0;
 
 Product::Product(const unsigned int _id, const string _name, const string _brand, const string _category, const double _price, const unsigned int _quantity) {
 	this->_id = _id;
@@ -11,7 +11,6 @@ Product::Product(const unsigned int _id, const string _name, const string _brand
 	this->_category = _category;
 	this->_price = _price;
 	this->_quantity = _quantity;
-	//this->_totalQuantity++;
 }
 
 Product::~Product(void) {
@@ -69,16 +68,21 @@ const unsigned int Product::quantity(void)const {
 }
 
 void Product::assignId(void) {
-	this->_id = this->_validId++;
+	this->_id = this->_avilableId++;
 }
 
-void Product::display(void)const {
+void Product::display(const bool _asRowInTable) const {
 	if (this->_id == 0) return;
-	cout << "Name: " << this->_name << endl;
-	cout << "Brand: " << this->_brand << endl;
-	cout << "Category: " << this->_category << endl;
-	cout << "Price: " << this->_price << endl;
-	cout << '\t' << this->_quantity << " stocks available" << endl;
+	if (_asRowInTable)
+		cout << std::setw(8) << this->_id << '|' << std::setw(8) << this->_name << '|' << std::setw(8) << this->_brand << '|' << std::setw(8) << this->_category << '|' << std::setw(8) << this->_price << '|' << std::setw(8) << this->_quantity;
+	else {
+		cout << "Name: " << this->_name << endl
+			<< "Brand: " << this->_brand << endl
+			<< "Category: " << this->_category << endl
+			<< "Price: " << this->_price << endl
+			<< '\t' << this->_quantity << " stocks available" << endl
+			<< 40 * (string)"_" << endl;
+	}
 }
 
 istream& operator>>(istream& in, Product& _product) {

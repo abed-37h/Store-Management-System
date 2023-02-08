@@ -1,10 +1,5 @@
 #include "utilities.h"
-#include <Windows.h>
-#include <sstream>
 
-using std::istringstream;
-using std::getline;
-//using std::count;
 
 int main() {
 	prompt:
@@ -15,8 +10,8 @@ int main() {
 	char answer = _getch();
 	system("cls");
 
-	bool success;
-	User* user = NULL;
+	bool success = false;
+	User* user = nullptr;
 	enum class userTypes {
 		none = 0,
 		dealer = 1,
@@ -26,40 +21,59 @@ int main() {
 	userTypes userType = userTypes::none;
 	switch (answer) {
 	case 'n':
-		cout << "Register" << endl;
-		cout << "\tChoose your account type:" << endl
-			<< "\t\t1.Dealer" << "\t\t2.Employee" << "\t\t3.Customer" << endl;
-		/*int userTypeInput;
-		cin >> userTypeInput;*/
-		userType = static_cast<userTypes>(input<int>());
 		do {
-			string firstname = input<string>("\tFirstname: ");
-			string lastname = input<string>("\tLastname: ");
-			string username = input<string>("\tUsername: ");
-			string email = input<string>("\tEmail: ");
-			string password = getPassword("\tPassword: ");
-			Date birthday = input<Date>("\tBirthDay (yyyy-mm-dd): ");
+			try {
+				cout << "Register" << endl;
+				cout << "\tChoose your account type:" << endl
+					<< "\t\t1.Dealer" << "\t\t2.Employee" << "\t\t3.Customer" << endl;
+				userType = static_cast<userTypes>(input<int>());
+				if (userType != userTypes::dealer && userType != userTypes::employee && userType != userTypes::customer) {
+					cerr << "The number must be 1, 2 or 3." << endl;
+					continue;
+				}
 
-			if (userType == userTypes::dealer) {
-				//delete user;
-				user = new Dealer(firstname, lastname, username, email, password, birthday);
+				string firstname = input<string>("\tFirstname: ");
+				string lastname = input<string>("\tLastname: ");
+				string username = input<string>("\tUsername: ");
+				string email = input<string>("\tEmail: ");
+				string password = getPassword("\tPassword: ");
+				Date birthday = input<Date>("\tBirthDay (yyyy-mm-dd): ");
+
+				if (userType == userTypes::dealer) {
+					//delete user;
+					user = new Dealer(firstname, lastname, username, email, password, birthday);
+				}
+
+				else if (userType == userTypes::employee) {
+					//delete user;
+					user = new Employee(firstname, lastname, username, email, password, birthday);
+				}
+
+				else if (userType == userTypes::customer) {
+					//delete user;
+					double balance = input<double>("\tYour Balance: ");
+					user = new Customer(firstname, lastname, username, email, password, birthday, balance);
+				}
+
+				success = user->createAccount();
+				system("cls");
+				if (!success) {
+					cout << "Username or email already exist!" << endl;
+				}
 			}
-			
-			else if (userType == userTypes::employee) {
-				//delete user;
-				user = new Employee(firstname, lastname, username, email, password, birthday);
+			catch (const int&) {
+				cin.clear();
+				cin.ignore();
+				cerr << "Please, enter an integer number." << endl;
 			}
-			
-			else if (userType == userTypes::customer) {
-				//delete user;
-				double balance = input<double>("\tYour Balance: ");
-				user = new Customer(firstname, lastname, username, email, password, birthday, balance);
+			catch (const string& str) {
+				cerr << str << endl;
 			}
-			
-			success = user->createAccount();
-			system("cls");
-			if (!success) {
-				cout << "Username or email already exist!" << endl;
+			catch (const std::exception& e) {
+				cerr << e.what() << endl;
+			}
+			catch (...) {
+				cerr << "Some exceptions occurred!" << endl;
 			}
 		} while (!success);
 		cout << "Congratulations! your acount was created successfully." << endl;
@@ -111,17 +125,17 @@ int main() {
 	string action;
 	if (userType == userTypes::customer) {
 		Customer* customer = static_cast<Customer*>(user);
-		string category = "All";
+		string category = "*";
 		string command;
 		do {
 			cout << "Choose an action to do:" << endl
-				<< "\t1.Profile < show-profile >" << endl
-				<< "\t2.Add product to card < add {product-name} [quantity] >" << endl
-				<< "\t3.Modify the quantity of an added product < modify|edit {product-name} {quantity} >" << endl
-				<< "\t4.Remove item from cart < remove {product-name} >" << endl
-				<< "\t5.View cart < view-cart >" << endl
-				<< "\t6.Purchase Items < purchase >" << endl
-				<< "\t7.Exit < exit >" << endl;
+				<< "\t1. Profile < show-profile >" << endl
+				<< "\t2. Add product to card < add {product-name} [quantity] >" << endl
+				<< "\t3. Modify the quantity of an added product < modify|edit {product-name} {quantity} >" << endl
+				<< "\t4. Remove item from cart < remove {product-name} >" << endl
+				<< "\t5. View cart < view-cart >" << endl
+				<< "\t6. Exit < exit >" << endl;
+			cout << customer->username() << '>';
 			cin >> command;
 			if (command == "show-profile") {
 				system("cls");
@@ -133,45 +147,53 @@ int main() {
 						<< "\t2. Logout < logout >" << endl
 						<< "\t3. Delete account < delete >" << endl
 						<< "\t4. Go back < back >" << endl;
+					cout << customer->username() << '>';
 					cin >> command;
 					if (command == "edit") {
 						cout << "\tFirstname: ";
+						cin.ignore();
 						if (cin.peek() != inputChar::ENTER) {
 							string firstname = input<string>();
 							customer->firstname(firstname);
 						}
 
 						cout << "\tLastname: ";
+						cin.ignore();
 						if (cin.peek() != inputChar::ENTER) {
 							string lastname = input<string>();
 							customer->lastname(lastname);
 						}
 
 						cout << "\tUsername: ";
+						cin.ignore();
 						if (cin.peek() != inputChar::ENTER) {
 							string username = input<string>();
 							customer->username(username);
 						}
 
 						cout << "\tEmail: ";
+						cin.ignore();
 						if (cin.peek() != inputChar::ENTER) {
 							string email = input<string>();
 							customer->email(email);
 						}
 
 						cout << "\tPassword: ";
+						cin.ignore();
 						if (cin.peek() != inputChar::ENTER) {
 							string password = getPassword();
 							customer->password(password);
 						}
 
 						cout << "\tBirthDay (yyyy-mm-dd): ";
+						cin.ignore();
 						if (cin.peek() != inputChar::ENTER) {
 							Date birthday = input<Date>();
 							customer->birthday(birthday);
 						}
 
 						cout << "\tYour Balance: ";
+						cin.ignore();
 						if (cin.peek() != inputChar::ENTER) {
 							double balance = input<double>();
 							customer->balance(balance);
@@ -251,9 +273,16 @@ int main() {
 			}
 			else if (command == "view-cart") {
 				customer->viewCart();
-			}
-			else if (command == "purchase") {
-				customer->purchase();
+				do {
+					cout << "Choose an action to do:" << endl
+						<< "\t1. Purchase items < purchase >" << endl
+						<< "\t2. Back < back >" << endl;
+					cout << customer->username() << '>';
+					cin >> command;
+					if (command == "purchase") {
+						customer->purchase();
+					}
+				} while (command != "back");
 			}
 			system("cls");
 			customer->viewStocks(category);
@@ -265,7 +294,7 @@ int main() {
 
 	else if (userType == userTypes::employee) {
 		Employee* employee = static_cast<Employee*>(user);
-		string category = "All";
+		string category = "*";
 		string command;
 		do {
 			cout << "Choose an action to do:" << endl
@@ -384,19 +413,15 @@ int main() {
 
 	else if (userType == userTypes::dealer) {
 		Dealer* dealer = static_cast<Dealer*>(user);
+		string category = "*";
 		string command;
 		do {
 			cout << "Choose an action to do:" << endl
-				<< "\t1.Profile < show-profile >" << endl
-				<< "\t2.Add new product < add {name} {brand} {category} {price} {quanity} >" << endl
-				<< "\t3.Refill product < refill {id} {quantity} >" << endl
-				<< "\t4.Remove a product < remove {product-id} >" << endl
-				<< "\t5.Exit < exit >" << endl;
-			//action = _getch();
-			/*getline(cin, action);
-			action = strip(action);
-			istringstream sin(action);*/
-			string category = "All";
+				<< "\t1. Profile < show-profile >" << endl
+				<< "\t2. Add new product < add {name} {brand} {category} {price} {quanity} >" << endl
+				<< "\t3. Refill product < refill {id} {quantity} >" << endl
+				<< "\t4. Remove a product < remove {product-id} >" << endl
+				<< "\t5. Exit < exit >" << endl;
 			cin >> command;
 			if (command == "show-profile") {
 				system("cls");
@@ -411,36 +436,42 @@ int main() {
 					cin >> command;
 					if (command == "edit") {
 						cout << "\tFirstname: ";
+						cin.ignore();
 						if (cin.peek() != inputChar::ENTER) {
 							string firstname = input<string>();
 							dealer->firstname(firstname);
 						}
 
 						cout << "\tLastname: ";
+						cin.ignore();
 						if (cin.peek() != inputChar::ENTER) {
 							string lastname = input<string>();
 							dealer->lastname(lastname);
 						}
 
 						cout << "\tUsername: ";
+						cin.ignore();
 						if (cin.peek() != inputChar::ENTER) {
 							string username = input<string>();
 							dealer->username(username);
 						}
 
 						cout << "\tEmail: ";
+						cin.ignore();
 						if (cin.peek() != inputChar::ENTER) {
 							string email = input<string>();
 							dealer->email(email);
 						}
 
 						cout << "\tPassword: ";
+						cin.ignore();
 						if (cin.peek() != inputChar::ENTER) {
 							string password = getPassword();
 							dealer->password(password);
 						}
 
 						cout << "\tBirthDay (yyyy-mm-dd): ";
+						cin.ignore();
 						if (cin.peek() != inputChar::ENTER) {
 							Date birthday = input<Date>();
 							dealer->birthday(birthday);
@@ -494,7 +525,6 @@ int main() {
 				} while (command != "back");
 			}
 			else if (command == "add") {
-				//int spaces = count(action.begin(), action.end(), ' ');
 				string name;
 				string brand;
 				string category;

@@ -23,7 +23,7 @@ namespace filenames {
 	const string temp = "temp.txt";
 
 	template <typename T>
-	string chooseFilename(T& _object) {
+	inline string chooseFilename(T& _object) {
 		if (instanceof<Customer>(_object)) return customers;
 		if (instanceof<Employee>(_object)) return employees;
 		if (instanceof<Dealer>(_object)) return dealers;
@@ -34,7 +34,7 @@ namespace filenames {
 
 // General
 template <typename T>
-unsigned int getValidId(void);
+unsigned int getAvailableId(void);
 
 template <typename T>
 void insert(const T&);
@@ -71,21 +71,25 @@ namespace productio {
 
 // general
 template<typename T>
-inline unsigned int getValidId(void) {
+inline unsigned int getAvailableId(void) {
 	T _object;
 	ifstream fin;
 	const string _filename = filenames::chooseFilename(_object);
 	fin.open(_filename, std::ios::binary);
 	if (fin.fail()) {
-		fin.close();
 		return 1;
 	}
-	unsigned int _id
+	unsigned int _id = 0;
 	while (!fin.eof()) {
-		_id = fin.peek();
+		if (fin.peek() != '\n') _id = fin.peek();
 		string _line;
 		getline(fin, _line);
+		/*if (!_line.empty()) {
+			istringstream lin(_line);
+			lin >> _id;
+		}*/
 	}
+	fin.close();
 	return _id + 1;
 }
 

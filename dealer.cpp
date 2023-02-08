@@ -1,7 +1,8 @@
 #include "dealer.h"
 #include "fileio.h"
 
-unsigned int Dealer::_validId = getValidId<Dealer>();
+//unsigned int Dealer::_availableId = getAvailableId<Dealer>();
+unsigned int Dealer::_availableId = 0;
 
 Dealer::Dealer(const unsigned int _id, const string _firstname, const string _lastname, const string _username, const string _email, const string _password, const Date _birthday)
 	: User(_id, _firstname, _lastname, _username, _email, _password, _birthday) {
@@ -25,7 +26,7 @@ const bool Dealer::createAccount(void) {
 	if (userio::exist<Customer>(this->username(), this->email())) return false;
 	if (userio::exist<Employee>(this->username(), this->email())) return false;
 	if (userio::exist<Dealer>(this->username(), this->email())) return false;
-	this->id(this->_validId++);
+	this->id(this->_availableId++);
 	insert(*this);
 	return true;
 }

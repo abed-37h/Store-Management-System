@@ -1,20 +1,20 @@
 #pragma once
 #include "date.h"
 #include "product.h"
-#include <string>
 #include <iostream>
 #include <sstream>
+#include <string>
+#include <regex>
 
-using std::string;
-using std::istream;
-using std::ostream;
 using std::cout;
 using std::endl;
+using std::istream;
+using std::ostream;
+using std::string;
 
 class User
 {
 private:
-	//string _role;
 	unsigned int _id;
 	string _firstname;
 	string _lastname;
@@ -24,8 +24,6 @@ private:
 	Date _birthday;
 	//unsigned int _age;
 protected:
-	/*static unsigned int _lastUserId;
-	static unsigned int _numberOfUsers;*/
 	bool _loggedIn;
 	virtual istream& input(istream&);
 	virtual ostream& output(ostream&) const;
@@ -62,7 +60,7 @@ public:
 	virtual const bool login(void) = 0;
 	virtual const bool logout(void) = 0;
 	virtual void showProfileInfo(void)const;
-	void viewStocks(const string = "All")const;
+	virtual void viewStocks(const string = "*")const;
 	// Operators
 	bool operator==(const User&);
 	friend istream& operator>>(istream&, User&);

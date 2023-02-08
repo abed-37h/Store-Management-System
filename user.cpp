@@ -13,29 +13,75 @@ ostream& User::output(ostream& out) const {
 }
 
 User::User(const unsigned int _id, const string _firstname, const string _lastname, const string _username, const string _email, const string _password, const Date _birthday) {
-	//this->_id = this->_lastUserId++;
+	// Check Validity
+	/*if (!std::regex_match(_firstname, std::regex("[A-Z]{1,1}[a-z]+")))
+		throw string("Firstname must be a sequence of alphabetic letters (a-z) staring with a capital letter.");
+
+	if (!std::regex_match(_lastname, std::regex("[A-Z]{1,1}[a-z]+")))
+		throw string("Lastname must be a sequence of alphabetic letters (a-z) staring with a capital letter.");
+
+	if (!std::regex_match(_username, std::regex("[a-z][a-z0-9_\\.\\-]+")))
+		throw string("Invalid username: It must start with a letter, and can only include lower-case letters, numbers, underscore, dash and/or period.");
+	
+	if (!std::regex_match(_email, std::regex("[a-z][a-z0-9_\\.]+@[a-z]+\\.[a-z]+")))
+		throw string("Invalid email address: must be of the form 'something@example.example'. Can include lower-case letters, numbers and dot.");
+	
+	if (!std::regex_match(_password, std::regex("[a-zA-z0-9_@$#!&\\*\\-\\.\\?]")))
+		throw string("Invalid password: allowed characters are lower and upper-case letters, numbers, and these special characters '_@$#!&*-.?'.");
+	
+	if ((Date() - _birthday).year() > 100) throw InvalidDate("Logical age exceeded!");
+	if ((Date() - _birthday).year() < 14) throw InvalidDate("Illegal age (must be > 13).");*/
+
+	// Assign values if valid
 	this->_id = _id;
 	this->_firstname = _firstname;
 	this->_lastname = _lastname;
 	this->_username = _username;
 	this->_email = _email;
-	this->_password = _password; // TODO: cipher the password
+	this->_password = _password;
 	this->_birthday = _birthday;
-	//this->_numberOfUsers++;
 }
 
 User::User(const string _firstname, const string _lastname, const string _username, const string _email, const string _password, const Date _birthday) {
+	// Check Validity
+	/*if (!std::regex_match(_firstname, std::regex("[A-Z]{1,1}[a-z]+")))
+		throw string("Firstname must be a sequence of alphabetic letters (a-z) staring with a capital letter.");
+
+	if (!std::regex_match(_lastname, std::regex("[A-Z]{1,1}[a-z]+")))
+		throw string("Lastname must be a sequence of alphabetic letters (a-z) staring with a capital letter.");
+
+	if (!std::regex_match(_username, std::regex("[a-z][a-z0-9_\\.\\-]+")))
+		throw string("Invalid username: It must start with a letter, and can only include lower-case letters, numbers, underscore, dash and/or period.");
+
+	if (!std::regex_match(_email, std::regex("[a-z][a-z0-9_\\.]+@[a-z]+\\.[a-z]+")))
+		throw string("Invalid email address: must be of the form 'something@example.example'. Can include lower-case letters, numbers and dot.");
+
+	if (!std::regex_match(_password, std::regex("[a-zA-z0-9_@$#!&\\*\\-\\.\\?]")))
+		throw string("Invalid password: allowed characters are lower and upper-case letters, numbers, and these special characters '_@$#!&*-.?'.");
+
+	if ((Date() - _birthday).year() > 100) throw InvalidDate("Logical age exceeded!");
+	if ((Date() - _birthday).year() < 14) throw InvalidDate("Illegal age (must be > 13).");*/
+
+	// Assign values if valid
 	this->_firstname = _firstname;
 	this->_lastname = _lastname;
 	this->_username = _username;
 	this->_email = _email;
-	this->_password = _password; // TODO: cipher the password
+	this->_password = _password;
 	this->_birthday = _birthday;
 }
 
 User::User(const string _username, const string _password) {
+	// Check Validity
+	/*if (!std::regex_match(_username, std::regex("[a-z][a-z0-9_\\.\\-]+")))
+		throw string("Invalid username: It must start with a letter, and can only include lower-case letters, numbers, underscore, dash and/or period.");
+
+	if (!std::regex_match(_password, std::regex("[a-zA-z0-9_@$#!&\\*\\-\\.\\?]")))
+		throw string("Invalid password: allowed characters are lower and upper-case letters, numbers, and these special characters '_@$#!&*-.?'.");*/
+
+	// Assign values if valid
 	this->_username = _username;
-	this->_password = _password; // TODO: cipher the password
+	this->_password = _password;
 }
 
 User::~User(void) {
@@ -48,42 +94,59 @@ void User::id(const unsigned int _id) {
 }
 
 void User::firstname(const string _firstname) {
-	// TODO: Check if alphabetic and capitalize
+	// Check if alphabetic and capitalize
+	if (!std::regex_match(_firstname, std::regex("[A-Z]{1,1}[a-z]+")))
+		throw string("Firstname must be a sequence of alphabetic letters (a-z) staring with a capital letter.");
 	this->_firstname = _firstname;
 }
 
 void User::lastname(const string _lastname) {
-	// TODO: Check if alphabetic and capitalize
+	// Check if alphabetic and capitalize
+	if (!std::regex_match(_lastname, std::regex("[A-Z]{1,1}[a-z]+")))
+		throw string("Lastname must be a sequence of alphabetic letters (a-z) staring with a capital letter.");
 	this->_lastname = _lastname;
 }
 
 void User::fullname(const string _firstname, const string _lastname) {
-	// TODO: Check if alphabetic and capitalize
+	// Check if alphabetic and capitalize
+	if (!std::regex_match(_firstname, std::regex("[A-Z]{1,1}[a-z]+")) || !std::regex_match(_lastname, std::regex("[A-Z]{1,1}[a-z]+")))
+		throw string("Firstname and Lastname must be a sequence of alphabetic letters (a-z) staring with a capital letter.");
+
 	this->_firstname = _firstname;
 	this->_lastname = _lastname;
 }
 
 void User::username(const string _username) {
-	// TODO: Check validity
+	// Check validity
+	if (!std::regex_match(_username, std::regex("[a-z][a-z0-9_\\.\\-]+")))
+		throw string("Invalid username: It must start with a letter, and can only include lower-case letters, numbers, underscore, dash and/or period.");
 	this->_username = _username;
 }
 
 void User::email(const string _email) {
-	// TODO: Check validity
+	// Check validity
+	if (!std::regex_match(_email, std::regex("[a-z][a-z0-9_\\.]+@[a-z]+\\.[a-z]+")))
+		throw string("Invalid email address: must be of the form 'something@example.example'. Can include lower-case letters, numbers and dot.");
 	this->_email = _email;
 }
 
 void User::password(const string _password) {
-	// TODO: Check validity and cipher the password
+	// Check validity
+	if (!std::regex_match(_password, std::regex("[a-zA-z0-9_@$#!&\\*\\-\\.\\?]")))
+		throw string("Invalid password: allowed characters are lower and upper-case letters, numbers, and these special characters '_@$#!&*-.?'.");
 	this->_password = _password;
 }
 
 void User::birthday(const string _birthday) {
 	Date temp(_birthday);
+	if ((Date() - temp).year() > 100) throw InvalidDate("Logical age exceeded!");
+	if ((Date() - temp).year() < 14) throw InvalidDate("Illegal age (must be > 13).");
 	this->_birthday = temp;
 }
 
 void User::birthday(const Date _birthday) {
+	if ((Date() - _birthday).year() > 100) throw InvalidDate("Logical age exceeded!");
+	if ((Date() - _birthday).year() < 14) throw InvalidDate("Illegal age (must be > 13).");
 	this->_birthday = _birthday;
 }
 
@@ -166,10 +229,26 @@ const bool User::logout(void) {
 }*/
 void User::viewStocks(const string _category)const {
 	vector<Product> _products;
-	if (_category == "All") _products = selectSet<Product>();
+	if (_category == "*") _products = selectSet<Product>();
 	else _products = productio::selectSet(_category);
-	for (unsigned int i = 0; i < _products.size(); i++)
-		_products[i].display();
+
+	// TODO: Verify or modify
+	size_t maxId = 8, maxName = 10, maxBrand = 10, maxCat = 10, maxPrice = 8, maxQuan = 8;
+	for (Product _product : _products) {
+		maxId = (std::to_string(_product.id()).length() > maxId) ? std::to_string(_product.id()).length() : maxId;
+		maxName = (_product.name().length() > maxName) ? _product.name().length() : maxName;
+		maxBrand = (_product.brand().length() > maxBrand) ? _product.brand().length() : maxBrand;
+		maxCat = (_product.category().length() > maxCat) ? _product.category().length() : maxCat;
+		maxPrice = (std::to_string(_product.price()).length() > maxPrice) ? std::to_string(_product.price()).length() : maxPrice;
+		maxQuan = (std::to_string(_product.quantity()).length() > maxQuan) ? std::to_string(_product.quantity()).length() : maxQuan;
+	}
+
+	cout << std::setw(maxId) << "ID" << '|' << std::setw(maxName) << "Name" << '|' << std::setw(maxBrand) << "Brand" << '|' << std::setw(maxCat) << "Category" << '|' << std::setw(maxPrice) << "Price" << '|' << std::setw(maxQuan) << "Quantity";
+	int times = maxId + maxName + maxBrand + maxCat + maxPrice + maxQuan + 5;
+	cout << times * (string)"_" << endl;
+
+	for (Product _product : _products)
+		_product.display();
 }
 bool User::operator==(const User& _user) {
 	return (this->_firstname == _user._firstname && this->_lastname == _user._lastname &&

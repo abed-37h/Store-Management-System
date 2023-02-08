@@ -5,7 +5,7 @@ class Dealer :
     public User
 {
 private:
-    static unsigned int _validId;
+    static unsigned int _availableId;
 public:
     Dealer(const unsigned int = 0, const string = "", const string = "", const string = "", const string = "", const string = "", const Date = Date());
     Dealer(const string, const string, const string, const string, const string, const Date = Date());

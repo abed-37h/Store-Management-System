@@ -1,7 +1,8 @@
 #include "employee.h"
 #include "fileio.h"
 
-unsigned int Employee::_validId = getValidId<Employee>();
+//unsigned int Employee::_availableId = getAvailableId<Employee>();
+unsigned int Employee::_availableId = 0;
 
 istream& Employee::input(istream& in) {
 	return User::input(in) >> this->_wage;
@@ -13,6 +14,8 @@ ostream& Employee::output(ostream& out) const {
 
 Employee::Employee(const unsigned int _id, const string _firstname, const string _lastname, const string _username, const string _email, const string _password, const Date _birthday, const double _wage)
 	: User(_id, _firstname, _lastname, _username, _email, _password, _birthday) {
+	if (_wage < 0)
+		throw string("Wage couldn't be negative.");
 	this->_wage = _wage;
 }
 
@@ -30,6 +33,8 @@ Employee::~Employee() {
 }
 
 void Employee::wage(const double) {
+	if (_wage < 0)
+		throw string("Wage couldn't be negative.");
 	this->_wage = _wage;
 }
 
@@ -41,7 +46,8 @@ const bool Employee::createAccount(void) {
 	if (userio::exist<Customer>(this->username(), this->email())) return false;
 	if (userio::exist<Employee>(this->username(), this->email())) return false;
 	if (userio::exist<Dealer>(this->username(), this->email())) return false;
-	this->id(this->_validId++);
+	// TODO: cipher the password
+	this->id(this->_availableId++);
 	insert(*this);
 	return true;
 }
@@ -60,6 +66,7 @@ const bool Employee::deleteAccount(void) {
 }
 
 const bool Employee::login(void) {
+	// TODO: cipher the password
 	if (userio::authenticate<Employee>(this->username(), this->password())) {
 		*this = userio::select<Employee>(this->username());
 		this->_loggedIn = true;

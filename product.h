@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <iostream>
+#include <iomanip>
 
 using std::string;
 using std::istream;
@@ -11,8 +12,7 @@ using std::endl;
 class Product
 {
 private:
-	//static unsigned int _totalQuantity;
-	static unsigned int _validId;
+	static unsigned int _avilableId;
 	unsigned int _id;
 	string _name;
 	string _brand;
@@ -38,7 +38,7 @@ public:
 	const unsigned int quantity(void)const;
 	// 
 	void assignId(void);
-	void display(void)const;
+	void display(const bool = true)const;
 	friend istream& operator>>(istream&, Product&);
 	friend ostream& operator<<(ostream&, const Product&);
 	bool operator==(const Product&);

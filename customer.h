@@ -5,7 +5,7 @@ class Customer :
     public User
 {
 private:
-    static unsigned int _validId;
+    static unsigned int _availableId;
     double _balance;
     Cart _cart;
 protected:
@@ -17,17 +17,18 @@ public:
     Customer(const string, const string);
     ~Customer(void);
     void balance(const double);
-    const double balance(void)const;
+    const double balance(void) const;
     const bool createAccount(void);
     const bool modifyAccount(void);
     const bool deleteAccount(void);
     const bool login(void);
     const bool logout(void);
-    void showProfileInfo(void)const;
+    void showProfileInfo(void) const ;
+    void viewStocks(const string = "*") const override;
     const bool addProductToCart(const string, const unsigned int = 1);
     const bool modifyProductQunatityInCart(const string, const unsigned int);
     const bool removeProductFromCart(const string);
-    void viewCart(void)const;
+    void viewCart(void) const;
     bool purchase(void);
     bool operator==(const Customer&);
     /*friend istream& operator>>(istream&, Customer&);

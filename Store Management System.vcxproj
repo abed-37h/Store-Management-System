@@ -145,6 +145,7 @@
     <ClInclude Include="dealer.h" />
     <ClInclude Include="employee.h" />
     <ClInclude Include="fileio.h" />
+    <ClInclude Include="invalidDate.h" />
     <ClInclude Include="product.h" />
     <ClInclude Include="user.h" />
     <ClInclude Include="utilities.h" />
@@ -156,6 +157,7 @@
     <ClCompile Include="dealer.cpp" />
     <ClCompile Include="employee.cpp" />
     <ClCompile Include="fileio.cpp" />
+    <ClCompile Include="invalidDate.cpp" />
     <ClCompile Include="product.cpp" />
     <ClCompile Include="interface.cpp" />
     <ClCompile Include="user.cpp" />
