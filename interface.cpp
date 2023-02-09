@@ -2,8 +2,26 @@
 
 
 int main() {
-	prompt:
+	start:
 	const string welcome = "***************** WELCOME TO OUR STORE *****************";
+	cout << welcome << endl << endl;
+
+	cout << "Choose a theme:" << endl
+		<< "Dark [d]\t\tLight [l]\t\tLightBlue [b]" << endl;
+	char theme = _getch();
+	switch (theme) {
+	case 'd': system("Color 07"); break;
+	case 'l': system("Color F0"); break;
+	case 'b': system("Color 9F"); break;
+	case 27: return 0;
+	default:
+		system("cls");
+		cout << "invalid character!" << endl;
+		goto start;
+	}
+
+	prompt:
+	system("cls");
 	cout << welcome << endl << endl;
 
 	cout << "Do you have an account? [y/n] ";
@@ -130,9 +148,7 @@ int main() {
 		system("cls");
 		break;
 
-	case 27:
-		delete user;
-		return 0;
+	case 27: delete user; system("cls"); goto start;
 	default:
 		cout << "Please choose a valid character!" << endl;
 		system("cls");
@@ -557,7 +573,7 @@ int main() {
 		do {
 			cout << "Choose an action to do:" << endl
 				<< "\t1. Profile < show-profile >" << endl
-				<< "\t2. Add new product < add {name} {brand} {category} {price} {quanity} >" << endl
+				<< "\t2. Add new product < add {name} {brand} {category} {price} {quantity} >" << endl
 				<< "\t3. Refill product < refill {id} {quantity} >" << endl
 				<< "\t4. Remove a product < remove {product-id} >" << endl
 				<< "\t5. Exit < exit >" << endl;

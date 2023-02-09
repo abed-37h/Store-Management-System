@@ -41,7 +41,7 @@ const bool Cart::removeProduct(const Product _product) {
 }
 
 void Cart::display(void) const {
-	size_t maxName = 10, maxPrice = 5, maxQuan = 8;
+	size_t maxName = 12, maxPrice = 5, maxQuan = 8;
 	for (auto pair : _products) {
 		Product _product = pair.first;
 		maxName = (_product.name().length() > maxName) ? _product.name().length() : maxName;
@@ -52,8 +52,7 @@ void Cart::display(void) const {
 	cout << std::left;
 	cout << std::setw(maxName) << "Product Name" << "|" << std::setw(maxPrice) << "Price" << "|" << std::setw(maxQuan) << "Quantity" << endl;
 	
-	size_t times = maxName + maxPrice + maxQuan + 3;
-	cout << times * (string)"-" << endl;
+	cout << maxName * (string)"-" << '|' << maxPrice * (string)"-" << '|' << maxQuan*(string)"-" << endl;
 
 	for (auto pair : this->_products) {
 		cout << std::setw(maxName) << pair.first.name() << "|" << std::setw(maxPrice) << pair.first.price() << "|" << std::setw(maxQuan) << pair.second << endl;

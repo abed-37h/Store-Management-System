@@ -193,6 +193,7 @@ void User::showProfileInfo(void) const {
 		<< "Lastname: " << this->_lastname << endl
 		<< "Username: " << this->_username << endl
 		<< "Email: " << this->_email << endl
+		<< "Password: " << this->_password.length() * (string)"*" << endl
 		<< "Birthday: " << this->_birthday << endl;
 }
 
@@ -245,8 +246,7 @@ void User::viewStocks(const string _category)const {
 
 	cout << std::left;
 	cout << std::setw(maxId) << "ID" << '|' << std::setw(maxName) << "Name" << '|' << std::setw(maxBrand) << "Brand" << '|' << std::setw(maxCat) << "Category" << '|' << std::setw(maxPrice) << "Price" << '|' << std::setw(maxQuan) << "Quantity" << endl;
-	size_t times = maxId + maxName + maxBrand + maxCat + maxPrice + maxQuan + 5;
-	cout << times * (string)"-" << endl;
+	cout << maxId * (string)"-" << '|' << maxName * (string)"-" << '|' << maxBrand * (string)"-" << '|' << maxCat * (string)"-" << '|' << maxPrice * (string)"-" << '|' << maxQuan * (string)"-" << endl;
 
 	for (Product _product : _products)
 		_product.display();
