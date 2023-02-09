@@ -16,8 +16,8 @@ enum class Invalidity
 class InvalidDate :
     public std::exception
 {
-public:
     char* message;
+public:
     InvalidDate(Invalidity);
     InvalidDate(const char*);
     //InvalidDate(InvalidDate&);

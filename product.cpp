@@ -1,8 +1,8 @@
 #include "product.h"
 #include "fileio.h"
 
-//unsigned int Product::_avilableId = getAvailableId<Product>();
-unsigned int Product::_avilableId = 0;
+unsigned int Product::_availableId = getAvailableId<Product>();
+//unsigned int Product::_avilableId = 0;
 
 Product::Product(const unsigned int _id, const string _name, const string _brand, const string _category, const double _price, const unsigned int _quantity) {
 	this->_id = _id;
@@ -68,13 +68,25 @@ const unsigned int Product::quantity(void)const {
 }
 
 void Product::assignId(void) {
-	this->_id = this->_avilableId++;
+	this->_id = this->_availableId++;
 }
 
 void Product::display(const bool _asRowInTable) const {
 	if (this->_id == 0) return;
-	if (_asRowInTable)
-		cout << std::setw(8) << this->_id << '|' << std::setw(8) << this->_name << '|' << std::setw(8) << this->_brand << '|' << std::setw(8) << this->_category << '|' << std::setw(8) << this->_price << '|' << std::setw(8) << this->_quantity;
+	if (_asRowInTable) {
+		vector<Product> _products = selectSet<Product>();
+		size_t maxId = 8, maxName = 10, maxBrand = 10, maxCat = 10, maxPrice = 5, maxQuan = 8;
+		for (Product _product : _products) {
+			maxId = (std::to_string(_product.id()).length() > maxId) ? std::to_string(_product.id()).length() : maxId;
+			maxName = (_product.name().length() > maxName) ? _product.name().length() : maxName;
+			maxBrand = (_product.brand().length() > maxBrand) ? _product.brand().length() : maxBrand;
+			maxCat = (_product.category().length() > maxCat) ? _product.category().length() : maxCat;
+			maxPrice = (std::to_string(_product.price()).length() > maxPrice) ? std::to_string(_product.price()).length() : maxPrice;
+			maxQuan = (std::to_string(_product.quantity()).length() > maxQuan) ? std::to_string(_product.quantity()).length() : maxQuan;
+		}
+
+		cout << std::setw(maxId) << this->_id << '|' << std::setw(maxName) << this->_name << '|' << std::setw(maxBrand) << this->_brand << '|' << std::setw(maxCat) << this->_category << '|' << std::setw(maxPrice) << this->_price << '|' << std::setw(maxQuan) << this->_quantity << endl;
+	}
 	else {
 		cout << "Name: " << this->_name << endl
 			<< "Brand: " << this->_brand << endl

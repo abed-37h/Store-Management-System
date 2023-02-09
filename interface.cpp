@@ -69,6 +69,9 @@ int main() {
 			catch (const string& str) {
 				cerr << str << endl;
 			}
+			catch (InvalidDate& e) {
+				cerr << e.what() << endl;
+			}
 			catch (const std::exception& e) {
 				cerr << e.what() << endl;
 			}
@@ -80,33 +83,45 @@ int main() {
 		cout << "Please login now." << endl;
 		Sleep(5);
 		system("cls");
+
 	case 'y':
 		cout << "Login" << endl;
 		do {
-			string username = input<string>("\tUsername: ");
-			string password = getPassword("\tPassword: ");
-			system("cls");
+			try {
+				string username = input<string>("\tUsername: ");
+				string password = getPassword("\tPassword: ");
+				system("cls");
 
-			// Try login as a customer
-			user = new Customer(username, password);
-			success = user->login();
-			userType = userTypes::customer;
+				// Try login as a customer
+				user = new Customer(username, password);
+				success = user->login();
+				userType = userTypes::customer;
 
-			if (!success) { // If failed try as employee
-				user = new Employee(username, password);
-				success = user->login();
-				userType = userTypes::employee;
+				if (!success) { // If failed try as employee
+					user = new Employee(username, password);
+					success = user->login();
+					userType = userTypes::employee;
+				}
+
+				if (!success) { // If failed try as dealer
+					user = new Dealer(username, password);
+					success = user->login();
+					userType = userTypes::dealer;
+				}
+
+				if (!success) { // Otherwise it does not exist or password is incorrect
+					userType = userTypes::none;
+					cout << "Incorrect username or password!" << endl;
+				}
 			}
-			
-			if (!success) { // If failed try as dealer
-				user = new Dealer(username, password);
-				success = user->login();
-				userType = userTypes::dealer;
+			catch (const string& str) {
+				cerr << str << endl;
 			}
-			
-			if (!success) { // Otherwise it does not exist or password is incorrect
-				userType = userTypes::none;
-				cout << "Incorrect username or password!" << endl;
+			catch (const std::exception& e) {
+				cerr << e.what() << endl;
+			}
+			catch (...) {
+				cerr << "Some exceptions occurred!" << endl;
 			}
 		} while (!success);
 		
@@ -115,6 +130,9 @@ int main() {
 		system("cls");
 		break;
 
+	case 27:
+		delete user;
+		return 0;
 	default:
 		cout << "Please choose a valid character!" << endl;
 		system("cls");
@@ -150,61 +168,72 @@ int main() {
 					cout << customer->username() << '>';
 					cin >> command;
 					if (command == "edit") {
-						cout << "\tFirstname: ";
-						cin.ignore();
-						if (cin.peek() != inputChar::ENTER) {
-							string firstname = input<string>();
-							customer->firstname(firstname);
-						}
+						try {
+							cout << "\tFirstname: ";
+							cin.ignore();
+							if (cin.peek() != '\n') {
+								string firstname = input<string>();
+								customer->firstname(firstname);
+							}
 
-						cout << "\tLastname: ";
-						cin.ignore();
-						if (cin.peek() != inputChar::ENTER) {
-							string lastname = input<string>();
-							customer->lastname(lastname);
-						}
+							cout << "\tLastname: ";
+							cin.ignore();
+							if (cin.peek() != '\n') {
+								string lastname = input<string>();
+								customer->lastname(lastname);
+							}
 
-						cout << "\tUsername: ";
-						cin.ignore();
-						if (cin.peek() != inputChar::ENTER) {
-							string username = input<string>();
-							customer->username(username);
-						}
+							cout << "\tUsername: ";
+							cin.ignore();
+							if (cin.peek() != '\n') {
+								string username = input<string>();
+								customer->username(username);
+							}
 
-						cout << "\tEmail: ";
-						cin.ignore();
-						if (cin.peek() != inputChar::ENTER) {
-							string email = input<string>();
-							customer->email(email);
-						}
+							cout << "\tEmail: ";
+							cin.ignore();
+							if (cin.peek() != '\n') {
+								string email = input<string>();
+								customer->email(email);
+							}
 
-						cout << "\tPassword: ";
-						cin.ignore();
-						if (cin.peek() != inputChar::ENTER) {
-							string password = getPassword();
-							customer->password(password);
-						}
+							cout << "\tPassword: ";
+							cin.ignore();
+							if (cin.peek() != '\n') {
+								string password = getPassword();
+								customer->password(password);
+							}
 
-						cout << "\tBirthDay (yyyy-mm-dd): ";
-						cin.ignore();
-						if (cin.peek() != inputChar::ENTER) {
-							Date birthday = input<Date>();
-							customer->birthday(birthday);
-						}
+							cout << "\tBirthDay (yyyy-mm-dd): ";
+							cin.ignore();
+							if (cin.peek() != '\n') {
+								Date birthday = input<Date>();
+								customer->birthday(birthday);
+							}
 
-						cout << "\tYour Balance: ";
-						cin.ignore();
-						if (cin.peek() != inputChar::ENTER) {
-							double balance = input<double>();
-							customer->balance(balance);
-						}
+							cout << "\tYour Balance: ";
+							cin.ignore();
+							if (cin.peek() != '\n') {
+								double balance = input<double>();
+								customer->balance(balance);
+							}
 
-						customer->modifyAccount();
+							customer->modifyAccount();
+						}
+						catch (const string& str) {
+							cerr << str << endl;
+						}
+						catch (const std::exception& e) {
+							cerr << e.what() << endl;
+						}
+						catch (...) {
+							cerr << "Some exceptions occurred!" << endl;
+						}
 					}
 					else if (command == "logout") {
 						success = customer->logout();
 						if (success) {
-							delete customer;
+							//delete customer;
 							delete user;
 							customer = nullptr;
 							user = nullptr;
@@ -224,11 +253,13 @@ int main() {
 						case 'y':
 							success = customer->logout() && customer->deleteAccount();
 							if (success) {
-								delete customer;
+								//delete customer;
 								delete user;
 								customer = nullptr;
 								user = nullptr;
-								cout << "We are sad to see leave :(" << endl;
+								cout << "We are sad to see leave :(" << endl
+									<< "\tPress any key to continue..." << endl;
+								_getch();
 								Sleep(5);
 								system("cls");
 								goto prompt;
@@ -247,40 +278,110 @@ int main() {
 				} while (command != "back");
 			}
 			else if (command == "add") {
-				Product product;
-				string name;
-				cin >> name;
-				product.name(name);
-				if (!cin) {
-					customer->addProductToCart(name);
+				try {
+					Product product;
+					string name;
+					cin >> name;
+					product.name(name);
+					if (cin.peek() != '\n') {
+						customer->addProductToCart(name);
+					}
+					else {
+						unsigned int quantity;
+						cin >> quantity;
+						customer->addProductToCart(name, quantity);
+					}
 				}
-				else {
-					unsigned int quantity;
-					cin >> quantity;
-					customer->addProductToCart(name, quantity);
+				catch (const string& str) {
+					cerr << str << endl;
+				}
+				catch (const std::exception& e) {
+					cerr << e.what() << endl;
+				}
+				catch (...) {
+					if (!cin) {
+						cin.clear();
+						cin.ignore(100, '\n');
+						cerr << "Please, enter a type that matches!";
+					}
+					else
+						cerr << "Some exceptions occurred!" << endl;
 				}
 			}
 			else if (command == "modify" || command == "edit") {
-				string name;
-				unsigned int quantity;
-				cin >> name >> quantity;
-				customer->modifyProductQunatityInCart(name, quantity);
+				try {
+					string name;
+					unsigned int quantity;
+					cin >> name >> quantity;
+					customer->modifyProductQunatityInCart(name, quantity);
+				}
+				catch (const string& str) {
+					cerr << str << endl;
+				}
+				catch (const std::exception& e) {
+					cerr << e.what() << endl;
+				}
+				catch (...) {
+					if (!cin) {
+						cin.clear();
+						cin.ignore(100, '\n');
+						cerr << "Please, enter a type that matches!";
+					}
+					else
+						cerr << "Some exceptions occurred!" << endl;
+				}
 			}
 			else if (command == "remove") {
-				string name;
-				cin >> name;
-				customer->removeProductFromCart(name);
+				try {
+					string name;
+					cin >> name;
+					customer->removeProductFromCart(name);
+				}
+				catch (const string& str) {
+					cerr << str << endl;
+				}
+				catch (const std::exception& e) {
+					cerr << e.what() << endl;
+				}
+				catch (...) {
+					if (!cin) {
+						cin.clear();
+						cin.ignore(100, '\n');
+						cerr << "Please, enter a type that matches!";
+					}
+					else
+						cerr << "Some exceptions occurred!" << endl;
+				}
 			}
 			else if (command == "view-cart") {
-				customer->viewCart();
 				do {
-					cout << "Choose an action to do:" << endl
-						<< "\t1. Purchase items < purchase >" << endl
-						<< "\t2. Back < back >" << endl;
-					cout << customer->username() << '>';
-					cin >> command;
-					if (command == "purchase") {
-						customer->purchase();
+					try {
+						system("cls");
+						customer->viewCart();
+						cout << "Choose an action to do:" << endl
+							<< "\t1. Purchase items < purchase >" << endl
+							<< "\t2. Back < back >" << endl;
+						cout << customer->username() << '>';
+						cin >> command;
+						if (command == "purchase") {
+							customer->purchase();
+							break;
+						}
+					}
+					catch (const string& str) {
+						cerr << str << endl;
+					}
+					catch (const std::exception& e) {
+						cerr << e.what() << endl;
+					}
+					catch (...) {
+						if (!cin) {
+							cin.clear();
+							cin.ignore(100, '\n');
+							cerr << "Please, enter a type that matches!";
+						}
+						else
+							cerr << "Some exceptions occurred!" << endl;
 					}
 				} while (command != "back");
 			}
@@ -288,7 +389,7 @@ int main() {
 			customer->viewStocks(category);
 		} while (command != "exit");
 
-		delete customer;
+		//delete customer;
 		customer = nullptr;
 	}
 
@@ -301,6 +402,7 @@ int main() {
 				<< "\t1.Profile < show-profile >" << endl
 				<< "\t2.Refill product < refill {id} {quantity} >" << endl
 				<< "\t3.Exit < exit >" << endl;
+			cout << employee->username() << '>';
 			cin >> command;
 			if (command == "show-profile") {
 				system("cls");
@@ -312,50 +414,68 @@ int main() {
 						<< "\t2. Logout < logout >" << endl
 						<< "\t3. Delete account < delete >" << endl
 						<< "\t4. Go back < back >" << endl;
+					cout << employee->username() << '>';
 					cin >> command;
 					if (command == "edit") {
-						cout << "\tFirstname: ";
-						if (cin.peek() != inputChar::ENTER) {
-							string firstname = input<string>();
-							employee->firstname(firstname);
-						}
+						try {
+							cout << "\tFirstname: ";
+							cin.ignore();
+							if (cin.peek() != '\n') {
+								string firstname = input<string>();
+								employee->firstname(firstname);
+							}
 
-						cout << "\tLastname: ";
-						if (cin.peek() != inputChar::ENTER) {
-							string lastname = input<string>();
-							employee->lastname(lastname);
-						}
+							cout << "\tLastname: ";
+							cin.ignore();
+							if (cin.peek() != '\n') {
+								string lastname = input<string>();
+								employee->lastname(lastname);
+							}
 
-						cout << "\tUsername: ";
-						if (cin.peek() != inputChar::ENTER) {
-							string username = input<string>();
-							employee->username(username);
-						}
+							cout << "\tUsername: ";
+							cin.ignore();
+							if (cin.peek() != '\n') {
+								string username = input<string>();
+								employee->username(username);
+							}
 
-						cout << "\tEmail: ";
-						if (cin.peek() != inputChar::ENTER) {
-							string email = input<string>();
-							employee->email(email);
-						}
+							cout << "\tEmail: ";
+							cin.ignore();
+							if (cin.peek() != '\n') {
+								string email = input<string>();
+								employee->email(email);
+							}
 
-						cout << "\tPassword: ";
-						if (cin.peek() != inputChar::ENTER) {
-							string password = getPassword();
-							employee->password(password);
-						}
+							cout << "\tPassword: ";
+							cin.ignore();
+							if (cin.peek() != '\n') {
+								string password = getPassword();
+								employee->password(password);
+							}
 
-						cout << "\tBirthDay (yyyy-mm-dd): ";
-						if (cin.peek() != inputChar::ENTER) {
-							Date birthday = input<Date>();
-							employee->birthday(birthday);
-						}
+							cout << "\tBirthDay (yyyy-mm-dd): ";
+							cin.ignore();
+							if (cin.peek() != '\n') {
+								Date birthday = input<Date>();
+								employee->birthday(birthday);
+							}
 
-						employee->modifyAccount();
+							employee->modifyAccount();
+						}
+						catch (const string& str) {
+							cerr << str << endl;
+						}
+						catch (const std::exception& e) {
+							cerr << e.what() << endl;
+						}
+						catch (...) {
+							cerr << "Some exceptions occurred!" << endl;
+						}
 					}
 					else if (command == "logout") {
 						success = employee->logout();
 						if (success) {
-							delete employee;
+							//delete employee;
 							delete user;
 							employee = nullptr;
 							user = nullptr;
@@ -375,11 +495,13 @@ int main() {
 						case 'y':
 							success = employee->logout() && employee->deleteAccount();
 							if (success) {
-								delete employee;
+								//delete employee;
 								delete user;
 								employee = nullptr;
 								user = nullptr;
-								cout << "We are sad to see leave :(" << endl;
+								cout << "We are sad to see leave :(" << endl
+									<< "\tPress any key to continue..." << endl;
+								_getch();
 								Sleep(5);
 								system("cls");
 								goto prompt;
@@ -398,16 +520,33 @@ int main() {
 				} while (command != "back");
 			}
 			else if (command == "refill") {
-				unsigned int id;
-				unsigned int quantity;
-				cin >> id >> quantity;
-				employee->refill(id, quantity);
+				try {
+					unsigned int id;
+					unsigned int quantity;
+					cin >> id >> quantity;
+					employee->refill(id, quantity);
+				}
+				catch (const string& str) {
+					cerr << str << endl;
+				}
+				catch (const std::exception& e) {
+					cerr << e.what() << endl;
+				}
+				catch (...) {
+					if (!cin) {
+						cin.clear();
+						cin.ignore(100, '\n');
+						cerr << "Please, enter a type that matches!";
+					}
+					else
+						cerr << "Some exceptions occurred!" << endl;
+				}
 			}
 			system("cls");
 			employee->viewStocks(category);
 		} while (command != "exit");
 
-		delete employee;
+		//delete employee;
 		employee = nullptr;
 	}
 
@@ -422,6 +561,7 @@ int main() {
 				<< "\t3. Refill product < refill {id} {quantity} >" << endl
 				<< "\t4. Remove a product < remove {product-id} >" << endl
 				<< "\t5. Exit < exit >" << endl;
+			cout << dealer->username() << '>';
 			cin >> command;
 			if (command == "show-profile") {
 				system("cls");
@@ -433,56 +573,68 @@ int main() {
 						<< "\t2. Logout < logout >" << endl
 						<< "\t3. Delete account < delete >" << endl
 						<< "\t4. Go back < back >" << endl;
+					cout << dealer->username() << '>';
 					cin >> command;
 					if (command == "edit") {
-						cout << "\tFirstname: ";
-						cin.ignore();
-						if (cin.peek() != inputChar::ENTER) {
-							string firstname = input<string>();
-							dealer->firstname(firstname);
-						}
+						try {
+							cout << "\tFirstname: ";
+							cin.ignore();
+							if (cin.peek() != '\n') {
+								string firstname = input<string>();
+								dealer->firstname(firstname);
+							}
 
-						cout << "\tLastname: ";
-						cin.ignore();
-						if (cin.peek() != inputChar::ENTER) {
-							string lastname = input<string>();
-							dealer->lastname(lastname);
-						}
+							cout << "\tLastname: ";
+							cin.ignore();
+							if (cin.peek() != '\n') {
+								string lastname = input<string>();
+								dealer->lastname(lastname);
+							}
 
-						cout << "\tUsername: ";
-						cin.ignore();
-						if (cin.peek() != inputChar::ENTER) {
-							string username = input<string>();
-							dealer->username(username);
-						}
+							cout << "\tUsername: ";
+							cin.ignore();
+							if (cin.peek() != '\n') {
+								string username = input<string>();
+								dealer->username(username);
+							}
 
-						cout << "\tEmail: ";
-						cin.ignore();
-						if (cin.peek() != inputChar::ENTER) {
-							string email = input<string>();
-							dealer->email(email);
-						}
+							cout << "\tEmail: ";
+							cin.ignore();
+							if (cin.peek() != '\n') {
+								string email = input<string>();
+								dealer->email(email);
+							}
 
-						cout << "\tPassword: ";
-						cin.ignore();
-						if (cin.peek() != inputChar::ENTER) {
-							string password = getPassword();
-							dealer->password(password);
-						}
+							cout << "\tPassword: ";
+							cin.ignore();
+							if (cin.peek() != '\n') {
+								string password = getPassword();
+								dealer->password(password);
+							}
 
-						cout << "\tBirthDay (yyyy-mm-dd): ";
-						cin.ignore();
-						if (cin.peek() != inputChar::ENTER) {
-							Date birthday = input<Date>();
-							dealer->birthday(birthday);
-						}
+							cout << "\tBirthDay (yyyy-mm-dd): ";
+							cin.ignore();
+							if (cin.peek() != '\n') {
+								Date birthday = input<Date>();
+								dealer->birthday(birthday);
+							}
 
-						dealer->modifyAccount();
+							dealer->modifyAccount();
+						}
+						catch (const string& str) {
+							cerr << str << endl;
+						}
+						catch (const std::exception& e) {
+							cerr << e.what() << endl;
+						}
+						catch (...) {
+							cerr << "Some exceptions occurred!" << endl;
+						}
 					}
 					else if (command == "logout") {
 						success = dealer->logout();
 						if (success) {
-							delete dealer;
+							//delete dealer;
 							delete user;
 							dealer = nullptr;
 							user = nullptr;
@@ -502,11 +654,13 @@ int main() {
 						case 'y':
 							success = dealer->logout() && dealer->deleteAccount();
 							if (success) {
-								delete dealer;
+								//delete dealer;
 								delete user;
 								dealer = nullptr;
 								user = nullptr;
-								cout << "We are sad to see leave :(" << endl;
+								cout << "We are sad to see leave :(" << endl
+									<< "\tPress any key to continue..." << endl;
+								_getch();
 								Sleep(5);
 								system("cls");
 								goto prompt;
@@ -525,36 +679,88 @@ int main() {
 				} while (command != "back");
 			}
 			else if (command == "add") {
-				string name;
-				string brand;
-				string category;
-				double price;
-				unsigned int quantity;
-				cin >> name >> brand >> category >> price >> quantity;
-				Product product(0, name, brand, category, price, quantity);
-				dealer->addItem(product);
+				try {
+					string name;
+					string brand;
+					string category;
+					double price;
+					unsigned int quantity;
+					cin >> name >> brand >> category >> price >> quantity;
+					Product product(0, name, brand, category, price, quantity);
+					dealer->addItem(product);
+				}
+				catch (const string& str) {
+					cerr << str << endl;
+				}
+				catch (const std::exception& e) {
+					cerr << e.what() << endl;
+				}
+				catch (...) {
+					if (!cin) {
+						cin.clear();
+						cin.ignore(100, '\n');
+						cerr << "Please, enter a type that matches!";
+					}
+					else
+						cerr << "Some exceptions occurred!" << endl;
+				}
 			}
 			else if (command == "refill") {
-				unsigned int id;
-				unsigned int quantity;
-				cin >> id >> quantity;
-				dealer->refill(id, quantity);
+				try {
+					unsigned int id;
+					unsigned int quantity;
+					cin >> id >> quantity;
+					dealer->refill(id, quantity);
+				}
+				catch (const string& str) {
+					cerr << str << endl;
+				}
+				catch (const std::exception& e) {
+					cerr << e.what() << endl;
+				}
+				catch (...) {
+					if (!cin) {
+						cin.clear();
+						cin.ignore(100, '\n');
+						cerr << "Please, enter a type that matches!";
+					}
+					else
+						cerr << "Some exceptions occurred!" << endl;
+				}
 			}
 			else if (command == "remove") {
-				unsigned int id;
-				cin >> id;
-				dealer->removeItem(id);
+				try {
+
+					unsigned int id;
+					cin >> id;
+					dealer->removeItem(id);
+				}
+				catch (const string& str) {
+					cerr << str << endl;
+				}
+				catch (const std::exception& e) {
+					cerr << e.what() << endl;
+				}
+				catch (...) {
+					if (!cin) {
+						cin.clear();
+						cin.ignore(100, '\n');
+						cerr << "Please, enter a type that matches!";
+					}
+					else
+						cerr << "Some exceptions occurred!" << endl;
+				}
 			}
 			system("cls");
 			dealer->viewStocks(category);
 		} while (command != "exit");
 
-		delete dealer;
+		//delete dealer;
 		dealer = nullptr;
 	}
 
 	delete user;
 	user = nullptr;
-
+	system("cls");
 	return 0;
 }

@@ -12,7 +12,7 @@ using std::endl;
 class Product
 {
 private:
-	static unsigned int _avilableId;
+	static unsigned int _availableId;
 	unsigned int _id;
 	string _name;
 	string _brand;

@@ -1,15 +1,15 @@
 #include "employee.h"
 #include "fileio.h"
 
-//unsigned int Employee::_availableId = getAvailableId<Employee>();
-unsigned int Employee::_availableId = 0;
+unsigned int Employee::_availableId = getAvailableId<Employee>();
+//unsigned int Employee::_availableId = 0;
 
 istream& Employee::input(istream& in) {
 	return User::input(in) >> this->_wage;
 }
 
 ostream& Employee::output(ostream& out) const {
-	return User::output(out) << this->_wage;
+	return User::output(out) << '\t' << this->_wage;
 }
 
 Employee::Employee(const unsigned int _id, const string _firstname, const string _lastname, const string _username, const string _email, const string _password, const Date _birthday, const double _wage)

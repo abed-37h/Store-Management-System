@@ -41,12 +41,24 @@ const bool Cart::removeProduct(const Product _product) {
 }
 
 void Cart::display(void) const {
-	// TODO: format output
-	cout << "Product Name\t|\tPrice\t|\tQuantity" << endl;
-	for (auto pair : this->_products) {
-		cout << pair.first.name() << "\t|\t" << pair.first.price() << "\t|\t" << pair.second << endl;
+	size_t maxName = 10, maxPrice = 5, maxQuan = 8;
+	for (auto pair : _products) {
+		Product _product = pair.first;
+		maxName = (_product.name().length() > maxName) ? _product.name().length() : maxName;
+		maxPrice = (std::to_string(_product.price()).length() > maxPrice) ? std::to_string(_product.price()).length() : maxPrice;
+		maxQuan = (std::to_string(pair.second).length() > maxQuan) ? std::to_string(pair.second).length() : maxQuan;
 	}
-	cout << endl << "Total Price: " << this->_totalPrice << endl;
+
+	cout << std::left;
+	cout << std::setw(maxName) << "Product Name" << "|" << std::setw(maxPrice) << "Price" << "|" << std::setw(maxQuan) << "Quantity" << endl;
+	
+	size_t times = maxName + maxPrice + maxQuan + 3;
+	cout << times * (string)"-" << endl;
+
+	for (auto pair : this->_products) {
+		cout << std::setw(maxName) << pair.first.name() << "|" << std::setw(maxPrice) << pair.first.price() << "|" << std::setw(maxQuan) << pair.second << endl;
+	}
+	cout << endl << "\tTotal Price: " << this->_totalPrice << endl << endl;
 }
 
 const double Cart::purchase(void) {

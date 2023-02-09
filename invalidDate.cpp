@@ -19,7 +19,7 @@ InvalidDate::InvalidDate(Invalidity _invalidity) {
 }
 
 InvalidDate::InvalidDate(const char* message) {
-	this->message = (char*)("Invalid date: " + std::string(message)).c_str();
+	this->message = (char*)message;
 	/*size_t length = strlen(message) + 1;
 	message = new char[length];
 	strcpy_s(this->message, length, message);*/

@@ -81,13 +81,13 @@ inline unsigned int getAvailableId(void) {
 	}
 	unsigned int _id = 0;
 	while (!fin.eof()) {
-		if (fin.peek() != '\n') _id = fin.peek();
+		//if (fin.peek() != '\n') _id = fin.peek();
 		string _line;
 		getline(fin, _line);
-		/*if (!_line.empty()) {
+		if (!_line.empty()) {
 			istringstream lin(_line);
 			lin >> _id;
-		}*/
+		}
 	}
 	fin.close();
 	return _id + 1;

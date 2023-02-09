@@ -1,1 +1,3 @@
-1	MacBook_Pro	Apple	Laptops	1000	35
+1	MacBook_Pro	Apple	Laptops	1000	33
+2	IdeaPad_Gaming	Lenovo	Laptops	700	9
+3	Galaxy_A51	Samsung	Phones	270	35

@@ -1,8 +1,8 @@
 #include "customer.h"
 #include "fileio.h"
 
-//unsigned int Customer::_availableId = getAvailableId<Customer>();
-unsigned int Customer::_availableId = 0;
+unsigned int Customer::_availableId = getAvailableId<Customer>();
+//unsigned int Customer::_availableId = 0;
 
 istream& Customer::input(istream& in) {
 	return User::input(in) >> this->_balance;
@@ -14,8 +14,8 @@ ostream& Customer::output(ostream& out) const {
 
 Customer::Customer(const unsigned int _id, const string _firstname, const string _lastname, const string _username, const string _email, const string _password, const Date _birthday, const double _balance)
 	: User(_id, _firstname, _lastname, _username, _email, _password, _birthday) {
-	if (_balance < 0)
-		throw string("Balance couldn't be negative.");
+	/*if (_balance < 0)
+		throw string("Balance couldn't be negative.");*/
 	this->_balance = _balance;
 }
 
@@ -96,6 +96,7 @@ void Customer::viewStocks(const string _category) const {
 
 	for (Product _product : _products)
 		_product.display(false);
+	cout << endl;
 }
 
 const bool Customer::addProductToCart(const string _name, const unsigned int _quantity) {

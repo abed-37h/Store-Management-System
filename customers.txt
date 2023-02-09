@@ -1,2 +1,2 @@
-1	Abdurrahman	Al-Hariri	abedha	abed@gmail.com	abed123	2001-2-13	48000
+1	Abdurrahman	Al-Hariri	abedha	abed@gmail.com	abed123	2001-2-13	45300
 2	John	Smith	john_s123	johnsmith@example.com	js123	1970-1-1	1e+08
