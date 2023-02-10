@@ -93,7 +93,7 @@ void Product::display(const bool _asRowInTable) const {
 			<< "Category: " << this->_category << endl
 			<< "Price: " << this->_price << endl
 			<< '\t' << this->_quantity << " stocks available" << endl
-			<< 40 * (string)"_" << endl;
+			<< 40 * (string)"_" << endl << endl;
 	}
 }
 

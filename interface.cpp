@@ -169,7 +169,7 @@ int main() {
 				<< "\t4. Remove item from cart < remove {product-name} >" << endl
 				<< "\t5. View cart < view-cart >" << endl
 				<< "\t6. Exit < exit >" << endl;
-			cout << customer->username() << '>';
+			cout << customer->username() << "@customer>";
 			cin >> command;
 			if (command == "show-profile") {
 				system("cls");
@@ -181,7 +181,7 @@ int main() {
 						<< "\t2. Logout < logout >" << endl
 						<< "\t3. Delete account < delete >" << endl
 						<< "\t4. Go back < back >" << endl;
-					cout << customer->username() << '>';
+					cout << customer->username() << "@customer>";
 					cin >> command;
 					if (command == "edit") {
 						try {
@@ -300,12 +300,14 @@ int main() {
 					cin >> name;
 					product.name(name);
 					if (cin.peek() != '\n') {
-						customer->addProductToCart(name);
+						if (!customer->addProductToCart(name))
+							cerr << "This Product does not exist!" << endl;
 					}
 					else {
 						unsigned int quantity;
 						cin >> quantity;
-						customer->addProductToCart(name, quantity);
+						if(!customer->addProductToCart(name, quantity))
+							cerr << "This Product does not exist!" << endl;
 					}
 				}
 				catch (const string& str) {
@@ -329,7 +331,8 @@ int main() {
 					string name;
 					unsigned int quantity;
 					cin >> name >> quantity;
-					customer->modifyProductQunatityInCart(name, quantity);
+					if(customer->modifyProductQunatityInCart(name, quantity))
+						cerr << "This Product does not exist or not added to cart!" << endl;
 				}
 				catch (const string& str) {
 					cerr << str << endl;
@@ -351,7 +354,8 @@ int main() {
 				try {
 					string name;
 					cin >> name;
-					customer->removeProductFromCart(name);
+					if (customer->removeProductFromCart(name))
+						cerr << "This Product does not exist or not added to cart!" << endl;
 				}
 				catch (const string& str) {
 					cerr << str << endl;
@@ -377,7 +381,7 @@ int main() {
 						cout << "Choose an action to do:" << endl
 							<< "\t1. Purchase items < purchase >" << endl
 							<< "\t2. Back < back >" << endl;
-						cout << customer->username() << '>';
+						cout << customer->username() << "@customer>";
 						cin >> command;
 						if (command == "purchase") {
 							customer->purchase();
@@ -418,7 +422,7 @@ int main() {
 				<< "\t1.Profile < show-profile >" << endl
 				<< "\t2.Refill product < refill {id} {quantity} >" << endl
 				<< "\t3.Exit < exit >" << endl;
-			cout << employee->username() << '>';
+			cout << employee->username() << "@employee>";
 			cin >> command;
 			if (command == "show-profile") {
 				system("cls");
@@ -430,7 +434,7 @@ int main() {
 						<< "\t2. Logout < logout >" << endl
 						<< "\t3. Delete account < delete >" << endl
 						<< "\t4. Go back < back >" << endl;
-					cout << employee->username() << '>';
+					cout << employee->username() << "@employee>";
 					cin >> command;
 					if (command == "edit") {
 						try {
@@ -540,7 +544,8 @@ int main() {
 					unsigned int id;
 					unsigned int quantity;
 					cin >> id >> quantity;
-					employee->refill(id, quantity);
+					if(!employee->refill(id, quantity))
+						cerr << "This Product does not exist!" << endl;
 				}
 				catch (const string& str) {
 					cerr << str << endl;
@@ -573,11 +578,11 @@ int main() {
 		do {
 			cout << "Choose an action to do:" << endl
 				<< "\t1. Profile < show-profile >" << endl
-				<< "\t2. Add new product < add {name} {brand} {category} {price} {quantity} >" << endl
+				<< "\t2. Add new product < add >" << endl
 				<< "\t3. Refill product < refill {id} {quantity} >" << endl
 				<< "\t4. Remove a product < remove {product-id} >" << endl
 				<< "\t5. Exit < exit >" << endl;
-			cout << dealer->username() << '>';
+			cout << dealer->username() << "@dealer>";
 			cin >> command;
 			if (command == "show-profile") {
 				system("cls");
@@ -589,7 +594,7 @@ int main() {
 						<< "\t2. Logout < logout >" << endl
 						<< "\t3. Delete account < delete >" << endl
 						<< "\t4. Go back < back >" << endl;
-					cout << dealer->username() << '>';
+					cout << dealer->username() << "@dealer>";
 					cin >> command;
 					if (command == "edit") {
 						try {
@@ -696,14 +701,15 @@ int main() {
 			}
 			else if (command == "add") {
 				try {
-					string name;
-					string brand;
-					string category;
-					double price;
-					unsigned int quantity;
-					cin >> name >> brand >> category >> price >> quantity;
+					string name = input<string>("\tName: ");
+					string brand = input<string>("\tBrand: ");
+					string category = input<string>("\tCategory: ");
+					double price = input<double>("\tPrice: ");
+					unsigned int quantity = input<unsigned int>("\tQuantity: ");
 					Product product(0, name, brand, category, price, quantity);
-					dealer->addItem(product);
+					if (!dealer->addItem(product)) {
+						cerr << "This Product does not exist!" << endl;
+					}
 				}
 				catch (const string& str) {
 					cerr << str << endl;
@@ -726,7 +732,8 @@ int main() {
 					unsigned int id;
 					unsigned int quantity;
 					cin >> id >> quantity;
-					dealer->refill(id, quantity);
+					if(!dealer->refill(id, quantity))
+						cerr << "This Product does not exist!" << endl;
 				}
 				catch (const string& str) {
 					cerr << str << endl;
@@ -749,7 +756,8 @@ int main() {
 
 					unsigned int id;
 					cin >> id;
-					dealer->removeItem(id);
+					if(!dealer->removeItem(id))
+						cerr << "This Product does not exist!" << endl;
 				}
 				catch (const string& str) {
 					cerr << str << endl;

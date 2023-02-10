@@ -18,12 +18,12 @@ public:
     ~Customer(void);
     void balance(const double);
     const double balance(void) const;
-    const bool createAccount(void);
-    const bool modifyAccount(void);
-    const bool deleteAccount(void);
-    const bool login(void);
-    const bool logout(void);
-    void showProfileInfo(void) const ;
+    const bool createAccount(void) override;
+    const bool modifyAccount(void) override;
+    const bool deleteAccount(void) override;
+    const bool login(void) override;
+    const bool logout(void) override;
+    void showProfileInfo(void) const override;
     void viewStocks(const string = "*") const override;
     const bool addProductToCart(const string, const unsigned int = 1);
     const bool modifyProductQunatityInCart(const string, const unsigned int);

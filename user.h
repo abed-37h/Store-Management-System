@@ -43,15 +43,15 @@ public:
 	void birthday(const string);
 	void birthday(const Date);
 	// Getters:
-	const unsigned int id(void)const;
-	const string firstname(void)const;
-	const string lastname(void)const;
-	const string fullname(void)const;
-	const string username(void)const;
-	const string email(void)const;
-	const string password(void)const;
-	const Date birthday(void)const;
-	const unsigned int age(void)const;
+	const unsigned int id(void) const;
+	const string firstname(void) const;
+	const string lastname(void) const;
+	const string fullname(void) const;
+	const string username(void) const;
+	const string email(void) const;
+	const string password(void) const;
+	const Date birthday(void) const;
+	const unsigned int age(void) const;
 	// 
 	//const unsigned int calculateAge(void)const;
 	virtual const bool createAccount(void) = 0;
