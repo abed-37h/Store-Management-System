@@ -11,11 +11,11 @@ public:
     Dealer(const string, const string, const string, const string, const string, const Date = Date());
     Dealer(const string, const string);
     ~Dealer();
-    const bool createAccount(void);
-    const bool modifyAccount(void);
-    const bool deleteAccount(void);
-    const bool login(void);
-    const bool logout(void);
+    const bool createAccount(void) override;
+    const bool modifyAccount(void) override;
+    const bool deleteAccount(void) override;
+    const bool login(void) override;
+    const bool logout(void) override;
     const bool addItem(Product);
     const bool removeItem(const unsigned int);
     const bool refill(const unsigned int, const unsigned int);

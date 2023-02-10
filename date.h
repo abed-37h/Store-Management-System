@@ -28,9 +28,9 @@ public:
     void year(const int);
     void month(const int);
     void day(const int);
-    const int year(void)const;
-    const int month(void)const;
-    const int day(void)const;
+    const int year(void) const;
+    const int month(void) const;
+    const int day(void) const;
     bool operator==(const Date&) const;
     bool operator<(const Date&) const;
     bool operator>(const Date&) const;

@@ -16,12 +16,12 @@ public:
     ~Employee();
     void wage(const double);
     const double wage(void) const;
-    const bool createAccount(void);
-    const bool modifyAccount(void);
-    const bool deleteAccount(void);
-    const bool login(void);
-    const bool logout(void);
-    void showProfileInfo(void) const;
+    const bool createAccount(void) override;
+    const bool modifyAccount(void) override;
+    const bool deleteAccount(void) override;
+    const bool login(void) override;
+    const bool logout(void) override;
+    void showProfileInfo(void) const override;
     const bool refill(const unsigned int, const unsigned int);
     bool operator==(const Employee&);
     /*friend istream& operator>>(istream&, Employee&);

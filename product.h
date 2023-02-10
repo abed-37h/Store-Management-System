@@ -30,15 +30,15 @@ public:
 	void price(const double);
 	void quantity(const unsigned int);
 	// Getters:
-	const unsigned int id(void)const;
-	const string name(void)const;
-	const string brand(void)const;
-	const string category(void)const;
-	const double price(void)const;
-	const unsigned int quantity(void)const;
+	const unsigned int id(void) const;
+	const string name(void) const;
+	const string brand(void) const;
+	const string category(void) const;
+	const double price(void) const;
+	const unsigned int quantity(void) const;
 	// 
 	void assignId(void);
-	void display(const bool = true)const;
+	void display(const bool = true) const;
 	friend istream& operator>>(istream&, Product&);
 	friend ostream& operator<<(ostream&, const Product&);
 	bool operator==(const Product&);
@@ -48,6 +48,6 @@ public:
 	Product operator--(int);
 	Product operator+=(const unsigned int);
 	Product operator-=(const unsigned int);
-	bool operator<(const Product&)const; // NOTE: We don't use it actually, but just to avoid the error when used as key in map
+	bool operator<(const Product&) const; // NOTE: We don't use it actually, but just to avoid the error when used as key in map
 };
 

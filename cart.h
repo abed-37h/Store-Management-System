@@ -13,11 +13,11 @@ private:
 	double _totalPrice;
 public:
 	Cart();
-	const double totalPrice(void)const;
+	const double totalPrice(void) const;
 	const bool addProduct(const Product, const unsigned int = 1);
 	const bool modifyProductQuantity(const Product, const unsigned int);
 	const bool removeProduct(const Product);
-	void display(void)const;
+	void display(void) const;
 	const double purchase(void);
 	void clear(void);
 };
